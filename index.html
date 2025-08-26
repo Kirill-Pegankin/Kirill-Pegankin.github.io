@@ -10,25 +10,34 @@
       background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
       color: #f5f5f5;
       text-align: center;
-      line-height: 1.6;
+      line-height: 1.7;
     }
     header {
-      padding: 80px 20px 40px;
+      padding: 90px 20px 40px;
     }
     h1 {
-      font-size: 3rem;
-      font-weight: 600;
+      font-size: 3.2rem;
+      font-weight: 700;
       margin-bottom: 10px;
+    }
+    h1 span {
+      color: #00c6ff;
     }
     p {
       font-size: 1.2rem;
       color: #cccccc;
     }
+    .tagline {
+      font-size: 1.4rem;
+      font-weight: 500;
+      margin-top: 15px;
+      color: #eeeeee;
+    }
     .links {
       display: flex;
       justify-content: center;
       gap: 25px;
-      margin: 30px 0 60px;
+      margin: 40px 0 70px;
     }
     a {
       padding: 12px 28px;
@@ -56,11 +65,26 @@
       margin-bottom: 15px;
       color: #e0e0e0;
     }
+    section p {
+      margin-bottom: 15px;
+    }
     #message {
       margin: 30px 0 60px;
       font-size: 1.3rem;
       font-style: italic;
       color: #ddd;
+    }
+    .skills {
+      text-align: left;
+      margin-top: 20px;
+    }
+    .skills li {
+      background: rgba(255,255,255,0.05);
+      padding: 12px 18px;
+      border-radius: 8px;
+      margin: 8px 0;
+      list-style: none;
+      font-size: 1.1rem;
     }
     .gallery {
       display: grid;
@@ -87,8 +111,9 @@
 </head>
 <body>
   <header>
-    <h1>Kirill Pegankin</h1>
-    <p>Engineering • Design • Innovation</p>
+    <h1><span>Kirill Pegankin</span></h1>
+    <p class="tagline">Engineering • Design • Innovation</p>
+    <p>Turning ideas into functional and inspiring projects.</p>
   </header>
   
   <div class="links">
@@ -108,8 +133,19 @@
   </section>
 
   <section>
-    <h2>Photo Gallery</h2>
-    <p>A glimpse into my projects and engineering journey:</p>
+    <h2>Skills & Focus</h2>
+    <ul class="skills">
+      <li>3D Design & Modeling — Fusion 360, SolidWorks</li>
+      <li>Prototyping — From concept to functional build</li>
+      <li>3D Printing & Manufacturing</li>
+      <li>Creative problem solving & innovation</li>
+      <li>Engineering documentation & project planning</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Projects</h2>
+    <p>A selection of my recent work and experiments:</p>
     <div class="gallery">
       <img src="IMG_1606.jpeg" alt="Project 1">
       <img src="IMG_1607.jpeg" alt="Project 2">
