@@ -9,15 +9,11 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
       color: #f5f5f5;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
       text-align: center;
+      line-height: 1.6;
     }
     header {
-      margin-bottom: 40px;
+      padding: 80px 20px 40px;
     }
     h1 {
       font-size: 3rem;
@@ -30,8 +26,9 @@
     }
     .links {
       display: flex;
+      justify-content: center;
       gap: 25px;
-      margin-top: 30px;
+      margin: 30px 0 60px;
     }
     a {
       padding: 12px 28px;
@@ -49,33 +46,87 @@
       transform: translateY(-3px);
       box-shadow: 0px 6px 18px rgba(0,0,0,0.4);
     }
+    section {
+      max-width: 900px;
+      margin: 0 auto 80px;
+      padding: 0 20px;
+    }
+    section h2 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      color: #e0e0e0;
+    }
     #message {
-      margin-top: 50px;
+      margin: 30px 0 60px;
       font-size: 1.3rem;
       font-style: italic;
       color: #ddd;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .gallery img {
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.4);
+      transition: transform 0.3s ease;
+    }
+    .gallery img:hover {
+      transform: scale(1.05);
+    }
+    footer {
+      padding: 30px;
+      font-size: 0.9rem;
+      color: #aaa;
+      background: rgba(0,0,0,0.3);
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Kirill Pegankin</h1>
-    <p>Welcome to my website</p>
+    <p>Engineering • Design • Innovation</p>
   </header>
   
   <div class="links">
     <a href="https://www.printables.com/@KirillPegank_1843990" target="_blank">My Printables</a>
-    <a href="https://https://www.myminifactory.com/users/kirillpegankin" target="_blank">MyMiniFactory</a>
+    <a href="https://www.myminifactory.com/users/kirillpegankin?show=store" target="_blank">MyMiniFactory</a>
   </div>
 
   <div id="message">Loading...</div>
+
+  <section>
+    <h2>About Me</h2>
+    <p>
+      I am an engineer and designer passionate about creating solutions that combine functionality, 
+      precision, and creativity. My work spans across digital design, 3D modeling, and hands-on 
+      engineering projects. I believe in constant learning and pushing boundaries to achieve better results.
+    </p>
+  </section>
+
+  <section>
+    <h2>Photo Gallery</h2>
+    <p>A glimpse into my projects and engineering journey:</p>
+    <div class="gallery">
+      <img src="https://via.placeholder.com/400x250?text=Project+1" alt="Project 1">
+      <img src="https://via.placeholder.com/400x250?text=Project+2" alt="Project 2">
+      <img src="https://via.placeholder.com/400x250?text=Project+3" alt="Project 3">
+    </div>
+  </section>
+
+  <footer>
+    © 2025 Kirill Pegankin — All rights reserved
+  </footer>
 
   <script>
     const messages = [
       "Building skills and sharing ideas.",
       "Explore my work and resources.",
       "Innovation starts with curiosity.",
-      "Your journey begins here.",
+      "Engineering with purpose.",
       "Learning. Creating. Growing."
     ];
     
