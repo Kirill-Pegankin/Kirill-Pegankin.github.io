@@ -1,333 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Kirill Pegankin | Portfolio</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+/* General reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      color: #333;
-      line-height: 1.6;
-      background: #f9f9f9;
-      scroll-behavior: smooth;
-      display: flex;
-    }
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  display: flex;
+}
 
-    /* NAVBAR (top) */
-    nav {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      background: #fff;
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      padding: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      z-index: 1000;
-    }
-    nav a {
-      color: #333;
-      font-weight: 600;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-    nav a:hover { color: #0077ff; }
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background: #333;
+  color: white;
+  padding: 20px;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  overflow-y: auto;
+}
 
-    /* SIDEBAR (left) */
-    .sidebar {
-      position: fixed;
-      top: 80px; /* leaves space below nav */
-      left: 0;
-      width: 220px;
-      height: calc(100% - 80px);
-      background: #111;
-      color: #fff;
-      padding: 20px;
-      overflow-y: auto;
-    }
-    .sidebar h2 {
-      margin-bottom: 10px;
-      font-size: 1.3rem;
-      color: #fff;
-    }
-    .sidebar h3 {
-      margin: 15px 0 8px;
-      font-size: 1.1rem;
-      color: #0077ff;
-    }
-    .sidebar a {
-      display: block;
-      color: #ccc;
-      padding: 5px 0;
-      text-decoration: none;
-      transition: color 0.3s;
-    }
-    .sidebar a:hover {
-      color: #fff;
-    }
+.sidebar h2, .sidebar h3 {
+  margin-bottom: 10px;
+}
 
-    /* MAIN CONTENT */
-    .main-content {
-      margin-left: 240px; /* push away from sidebar */
-      width: 100%;
-    }
+.sidebar a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 6px 0;
+}
 
-    /* HERO */
-    .hero {
-      height: 100vh;
-      background: linear-gradient(135deg, #0077ff, #00c6ff);
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 0 20px;
-    }
-    .hero h1 {
-      font-size: 3.5rem;
-      margin-bottom: 15px;
-    }
-    .hero p {
-      font-size: 1.3rem;
-      margin-bottom: 30px;
-    }
-    .hero .btns {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-    .btn {
-      padding: 14px 28px;
-      border-radius: 6px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
-    .btn.primary {
-      background: #fff;
-      color: #0077ff;
-    }
-    .btn.primary:hover { background: #eee; }
-    .btn.secondary {
-      border: 2px solid #fff;
-      color: #fff;
-    }
-    .btn.secondary:hover { background: rgba(255,255,255,0.2); }
+.sidebar a:hover {
+  text-decoration: underline;
+}
 
-    /* SECTIONS */
-    section {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 100px 20px;
-      opacity: 0;
-      transform: translateY(50px);
-      transition: all 1s ease;
-    }
-    section.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    section h2 {
-      font-size: 2.2rem;
-      margin-bottom: 40px;
-      text-align: center;
-    }
+/* Main content */
+.main-content {
+  margin-left: 240px; /* leaves space for sidebar */
+  padding: 20px;
+  width: calc(100% - 240px);
+}
 
-    /* ABOUT */
-    .about {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 40px;
-    }
-    .about img {
-      width: 300px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-    .about-text { flex: 1; }
+/* Navigation bar */
+nav {
+  background: #444;
+  padding: 10px;
+  margin-bottom: 20px;
+}
 
-    /* SKILLS */
-    .skills {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-    .skill-card {
-      background: #fff;
-      padding: 25px;
-      border-radius: 10px;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease;
-    }
-    .skill-card:hover { transform: translateY(-8px); }
+nav a {
+  color: white;
+  margin-right: 15px;
+  text-decoration: none;
+}
 
-    /* PROJECTS */
-    .projects {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
-    }
-    .project {
-      background: #fff;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease;
-    }
-    .project img {
-      width: 100%;
-      display: block;
-    }
-    .project:hover { transform: translateY(-10px); }
-    .project p {
-      padding: 15px;
-      font-weight: 500;
-    }
+nav a:hover {
+  text-decoration: underline;
+}
 
-    /* CONTACT */
-    .contact {
-      text-align: center;
-    }
-    .contact a {
-      display: inline-block;
-      margin: 10px;
-      padding: 12px 20px;
-      background: #0077ff;
-      color: #fff;
-      border-radius: 6px;
-      text-decoration: none;
-      transition: background 0.3s ease;
-    }
-    .contact a:hover { background: #005ecc; }
+/* Sections */
+section {
+  margin-bottom: 40px;
+}
 
-    /* FOOTER */
-    footer {
-      background: #111;
-      color: #ccc;
-      text-align: center;
-      padding: 30px;
-      margin-top: 60px;
-    }
-  </style>
-</head>
-<body>
+.hero {
+  background: #f4f4f4;
+  padding: 20px;
+  text-align: center;
+}
 
-  <!-- NAV -->
-  <nav>
-    <a href="#about">About</a>
-    <a href="#skills">Skills</a>
-    <a href="#projects">Projects</a>
-    <a href="#contact">Contact</a>
-  </nav>
+img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 10px;
+}
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <h2>Projects</h2>
-    <h3>2025</h3>
-    <a href="#project1">Robotic Arm</a>
-    <a href="#project2">3D Printed Drone</a>
-    <h3>2024</h3>
-    <a href="#project3">Custom CNC Machine</a>
-  </aside>
-
-  <!-- MAIN CONTENT -->
-  <div class="main-content">
-
-    <!-- HERO -->
-    <section class="hero">
-      <h1>Kirill Pegankin</h1>
-      <p>Engineer • Designer • Innovator</p>
-      <div class="btns">
-        <a href="#projects" class="btn primary">See My Work</a>
-        <a href="#about" class="btn secondary">About Me</a>
-      </div>
-    </section>
-
-    <!-- ABOUT -->
-    <section id="about">
-      <h2>About Me</h2>
-      <div class="about">
-        <img src="IMG_1606.jpeg" alt="Kirill Pegankin">
-        <div class="about-text">
-          <p>
-            I am a young engineer and designer passionate about creating solutions that combine
-            functionality, precision, and creativity. My work spans across digital design,
-            3D modeling, and hands-on engineering projects.
-          </p>
-          <p>
-            I believe in constant learning and pushing boundaries to achieve better results.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- SKILLS -->
-    <section id="skills">
-      <h2>Skills</h2>
-      <div class="skills">
-        <div class="skill-card">3D Design & Modeling — Fusion 360, SolidWorks</div>
-        <div class="skill-card">Prototyping — From concept to functional build</div>
-        <div class="skill-card">3D Printing & Manufacturing</div>
-        <div class="skill-card">Creative Problem Solving</div>
-        <div class="skill-card">Engineering Documentation</div>
-      </div>
-    </section>
-
-    <!-- PROJECTS -->
-    <section id="projects">
-      <h2>Projects</h2>
-      <div class="projects">
-        <div class="project" id="project1">
-          <img src="IMG_1607.jpeg" alt="Robotic Arm">
-          <p>Robotic Arm (2025)</p>
-        </div>
-        <div class="project" id="project2">
-          <img src="IMG_1608.jpeg" alt="3D Printed Drone">
-          <p>3D Printed Drone (2025)</p>
-        </div>
-        <div class="project" id="project3">
-          <img src="IMG_1606.jpeg" alt="Custom CNC Machine">
-          <p>Custom CNC Machine (2024)</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact">
-      <h2>Contact Me</h2>
-      <div class="contact">
-        <p>Email: <a href="mailto:Kir.pegankin@gmail.com">Kir.pegankin@gmail.com</a></p>
-        <p>Email: <a href="mailto:kpegankin31@troyschools.org">kpegankin31@troyschools.org</a></p>
-        <a href="https://www.printables.com/@KirillPegank_1843990" target="_blank">My Printables</a>
-        <a href="https://www.myminifactory.com/users/kirillpegankin?show=store" target="_blank">MyMiniFactory</a>
-      </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-      © 2025 Kirill Pegankin — All rights reserved
-    </footer>
-
-  </div>
-
-  <!-- SCROLL ANIMATION -->
-  <script>
-    const sections = document.querySelectorAll('section');
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.2 });
-
-    sections.forEach(sec => observer.observe(sec));
-  </script>
-</body>
-</html>
+/* Footer */
+footer {
+  text-align: center;
+  padding: 20px;
+  background: #eee;
+  margin-top: 40px;
+}
