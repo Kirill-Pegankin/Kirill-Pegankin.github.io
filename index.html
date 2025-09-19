@@ -1,89 +1,146 @@
-/* General reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kirill Pegankin Portfolio</title>
+  <style>
+    /* General reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-body {
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
-  display: flex;
-}
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      display: flex;
+    }
 
-/* Sidebar */
-.sidebar {
-  width: 220px;
-  background: #333;
-  color: white;
-  padding: 20px;
-  height: 100vh;
-  position: fixed;
-  left: 0;
-  top: 0;
-  overflow-y: auto;
-}
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      background: #333;
+      color: white;
+      padding: 20px;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      overflow-y: auto;
+    }
 
-.sidebar h2, .sidebar h3 {
-  margin-bottom: 10px;
-}
+    .sidebar h2, .sidebar h3 {
+      margin-bottom: 10px;
+    }
 
-.sidebar a {
-  display: block;
-  color: white;
-  text-decoration: none;
-  padding: 6px 0;
-}
+    .sidebar a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 6px 0;
+    }
 
-.sidebar a:hover {
-  text-decoration: underline;
-}
+    .sidebar a:hover {
+      text-decoration: underline;
+    }
 
-/* Main content */
-.main-content {
-  margin-left: 240px; /* leaves space for sidebar */
-  padding: 20px;
-  width: calc(100% - 240px);
-}
+    /* Main content */
+    .main-content {
+      margin-left: 240px; /* leaves space for sidebar */
+      padding: 20px;
+      width: calc(100% - 240px);
+    }
 
-/* Navigation bar */
-nav {
-  background: #444;
-  padding: 10px;
-  margin-bottom: 20px;
-}
+    /* Navigation bar */
+    nav {
+      background: #444;
+      padding: 10px;
+      margin-bottom: 20px;
+    }
 
-nav a {
-  color: white;
-  margin-right: 15px;
-  text-decoration: none;
-}
+    nav a {
+      color: white;
+      margin-right: 15px;
+      text-decoration: none;
+    }
 
-nav a:hover {
-  text-decoration: underline;
-}
+    nav a:hover {
+      text-decoration: underline;
+    }
 
-/* Sections */
-section {
-  margin-bottom: 40px;
-}
+    /* Sections */
+    section {
+      margin-bottom: 40px;
+    }
 
-.hero {
-  background: #f4f4f4;
-  padding: 20px;
-  text-align: center;
-}
+    .hero {
+      background: #f4f4f4;
+      padding: 20px;
+      text-align: center;
+    }
 
-img {
-  max-width: 100%;
-  height: auto;
-  margin-top: 10px;
-}
+    img {
+      max-width: 100%;
+      height: auto;
+      margin-top: 10px;
+      border-radius: 6px;
+    }
 
-/* Footer */
-footer {
-  text-align: center;
-  padding: 20px;
-  background: #eee;
-  margin-top: 40px;
-}
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #eee;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2>Projects</h2>
+    <h3>2025</h3>
+    <a href="project1.html">Robotic Arm</a>
+    <a href="project2.html">3D Printed Drone</a>
+    <h3>2024</h3>
+    <a href="project3.html">Custom CNC Machine</a>
+  </aside>
+
+  <!-- Main content -->
+  <div class="main-content">
+    <nav>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <section id="about" class="hero">
+      <h1>Kirill Pegankin</h1>
+      <p>Engineering Portfolio</p>
+    </section>
+
+    <section id="skills">
+      <h2>Skills</h2>
+      <p>CAD Design, Electronics, 3D Printing, CNC Machining, Embedded Systems</p>
+    </section>
+
+    <section id="projects">
+      <h2>Projects Overview</h2>
+      <p>Check the sidebar for detailed project pages.</p>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>Email: pegankinkirill4@gmail.com</p>
+    </section>
+
+    <footer>
+      © 2025 Kirill Pegankin — All rights reserved
+    </footer>
+  </div>
+
+</body>
+</html>
