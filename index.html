@@ -12,9 +12,10 @@
       line-height: 1.6;
       background: #f9f9f9;
       scroll-behavior: smooth;
+      display: flex;
     }
 
-    /* NAVBAR */
+    /* NAVBAR (top) */
     nav {
       position: fixed;
       top: 0; left: 0;
@@ -34,6 +35,45 @@
       transition: color 0.3s ease;
     }
     nav a:hover { color: #0077ff; }
+
+    /* SIDEBAR (left) */
+    .sidebar {
+      position: fixed;
+      top: 80px; /* leaves space below nav */
+      left: 0;
+      width: 220px;
+      height: calc(100% - 80px);
+      background: #111;
+      color: #fff;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .sidebar h2 {
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+      color: #fff;
+    }
+    .sidebar h3 {
+      margin: 15px 0 8px;
+      font-size: 1.1rem;
+      color: #0077ff;
+    }
+    .sidebar a {
+      display: block;
+      color: #ccc;
+      padding: 5px 0;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .sidebar a:hover {
+      color: #fff;
+    }
+
+    /* MAIN CONTENT */
+    .main-content {
+      margin-left: 240px; /* push away from sidebar */
+      width: 100%;
+    }
 
     /* HERO */
     .hero {
@@ -186,77 +226,95 @@
     <a href="#contact">Contact</a>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero">
-    <h1>Kirill Pegankin</h1>
-    <p>Engineer • Designer • Innovator</p>
-    <div class="btns">
-      <a href="#projects" class="btn primary">See My Work</a>
-      <a href="#about" class="btn secondary">About Me</a>
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="about">
-    <h2>About Me</h2>
-    <div class="about">
-      <img src="IMG_1606.jpeg" alt="Kirill Pegankin">
-      <div class="about-text">
-        <p>
-          I am an young engineer and designer passionate about creating solutions that combine
-          functionality, precision, and creativity. My work spans across digital design,
-          3D modeling, and hands-on engineering projects.
-        </p>
-        <p>
-          I believe in constant learning and pushing boundaries to achieve better results.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- SKILLS -->
-  <section id="skills">
-    <h2>Skills</h2>
-    <div class="skills">
-      <div class="skill-card">3D Design & Modeling — Fusion 360, SolidWorks</div>
-      <div class="skill-card">Prototyping — From concept to functional build</div>
-      <div class="skill-card">3D Printing & Manufacturing</div>
-      <div class="skill-card">Creative Problem Solving</div>
-      <div class="skill-card">Engineering Documentation</div>
-    </div>
-  </section>
-
-  <!-- PROJECTS -->
-  <section id="projects">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
     <h2>Projects</h2>
-    <div class="projects">
-      <div class="project">
-        <img src="IMG_1607.jpeg" alt="Project 1">
-      </div>
-      <div class="project">
-        <img src="IMG_1608.jpeg" alt="Project 2">
-      </div>
-      <div class="project">
-        <img src="IMG_1606.jpeg" alt="Project 3">
-      </div>
-    </div>
-  </section>
+    <h3>2025</h3>
+    <a href="#project1">Robotic Arm</a>
+    <a href="#project2">3D Printed Drone</a>
+    <h3>2024</h3>
+    <a href="#project3">Custom CNC Machine</a>
+  </aside>
 
-  <!-- CONTACT -->
-  <section id="contact">
-    <h2>Contact Me</h2>
-    <div class="contact">
-      <p>Email: <a href="mailto:Kir.pegankin@gmail.com">Kir.pegankin@gmail.com</a></p>
-      <p>Email: <a href="kpegankin31@troyschools.org">kpegankin31@troyschools.org</a></p>
-      <a href="https://www.printables.com/@KirillPegank_1843990" target="_blank">My Printables</a>
-      <a href="https://www.myminifactory.com/users/kirillpegankin?show=store" target="_blank">MyMiniFactory</a>
-    </div>
-  </section>
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
 
-  <!-- FOOTER -->
-  <footer>
-    © 2025 Kirill Pegankin — All rights reserved
-  </footer>
+    <!-- HERO -->
+    <section class="hero">
+      <h1>Kirill Pegankin</h1>
+      <p>Engineer • Designer • Innovator</p>
+      <div class="btns">
+        <a href="#projects" class="btn primary">See My Work</a>
+        <a href="#about" class="btn secondary">About Me</a>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <h2>About Me</h2>
+      <div class="about">
+        <img src="IMG_1606.jpeg" alt="Kirill Pegankin">
+        <div class="about-text">
+          <p>
+            I am a young engineer and designer passionate about creating solutions that combine
+            functionality, precision, and creativity. My work spans across digital design,
+            3D modeling, and hands-on engineering projects.
+          </p>
+          <p>
+            I believe in constant learning and pushing boundaries to achieve better results.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <h2>Skills</h2>
+      <div class="skills">
+        <div class="skill-card">3D Design & Modeling — Fusion 360, SolidWorks</div>
+        <div class="skill-card">Prototyping — From concept to functional build</div>
+        <div class="skill-card">3D Printing & Manufacturing</div>
+        <div class="skill-card">Creative Problem Solving</div>
+        <div class="skill-card">Engineering Documentation</div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <h2>Projects</h2>
+      <div class="projects">
+        <div class="project" id="project1">
+          <img src="IMG_1607.jpeg" alt="Robotic Arm">
+          <p>Robotic Arm (2025)</p>
+        </div>
+        <div class="project" id="project2">
+          <img src="IMG_1608.jpeg" alt="3D Printed Drone">
+          <p>3D Printed Drone (2025)</p>
+        </div>
+        <div class="project" id="project3">
+          <img src="IMG_1606.jpeg" alt="Custom CNC Machine">
+          <p>Custom CNC Machine (2024)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <h2>Contact Me</h2>
+      <div class="contact">
+        <p>Email: <a href="mailto:Kir.pegankin@gmail.com">Kir.pegankin@gmail.com</a></p>
+        <p>Email: <a href="mailto:kpegankin31@troyschools.org">kpegankin31@troyschools.org</a></p>
+        <a href="https://www.printables.com/@KirillPegank_1843990" target="_blank">My Printables</a>
+        <a href="https://www.myminifactory.com/users/kirillpegankin?show=store" target="_blank">MyMiniFactory</a>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      © 2025 Kirill Pegankin — All rights reserved
+    </footer>
+
+  </div>
 
   <!-- SCROLL ANIMATION -->
   <script>
