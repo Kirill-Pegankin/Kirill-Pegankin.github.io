@@ -115,6 +115,10 @@ section h2 {
   border:1px solid var(--line);
 }
 
+.project.imperfect {
+  transform: translateY(6px);
+}
+
 .project img {
   width:100%;
   display:block;
@@ -177,8 +181,30 @@ footer {
   color:var(--muted);
 }
 
+/* SIGNATURE */
+.signature {
+  position:fixed;
+  bottom:18px;
+  left:18px;
+  font-size:.75rem;
+  color:var(--muted);
+  opacity:0;
+  transition:opacity .3s ease;
+}
+.signature.show { opacity:1; }
+
 @media (max-width:900px) {
   header, .about { grid-template-columns:1fr; }
+}
+
+/* PRINT MODE */
+@media print {
+  body::before {
+    content: "Designed to be held.";
+    display: block;
+    font-size: 12pt;
+    margin-bottom: 20px;
+  }
 }
 </style>
 </head>
@@ -223,7 +249,7 @@ footer {
   <div class="container">
     <h2>Projects</h2>
     <div class="projects">
-      <a class="project">
+      <a class="project imperfect">
         <img src="IMG_3329.jpg" data-alt="IMG_3329_fail.jpg" class="swap"
              alt="v4 failed due to shaft wobble under torque">
         <div data-note="v6 — first version that survived repeated use">
@@ -251,64 +277,65 @@ footer {
   </div>
 </section>
 
-<footer>
-  <div style="font-size:.85rem; margin-bottom:10px;">
+<footer id="footer">
+  <div id="footer-line" style="font-size:.85rem; margin-bottom:10px;">
     Most projects fail before they work.
   </div>
   © 2025 Kirill Pegankin
 </footer>
 
 <div class="blueprint"></div>
+<div class="signature">built, not styled</div>
 
 <script>
-/* CAD blueprint */
+// BLUEPRINT GRID
 let seq='';
-document.addEventListener('keydown',e=>{
-  seq+=e.key.toLowerCase();
-  if(!'cad'.startsWith(seq)) seq='';
-  if(seq==='cad'){
-    const bp=document.querySelector('.blueprint');
+document.addEventListener('keydown', e => {
+  seq += e.key.toLowerCase();
+  if(!'cad'.startsWith(seq)) seq = '';
+  if(seq === 'cad'){
+    const bp = document.querySelector('.blueprint');
     bp.classList.add('show');
     setTimeout(()=>bp.classList.remove('show'),5000);
-    seq='';
+    seq = '';
   }
 });
 
-/* inspection mode */
-document.addEventListener('keydown',e=>{
-  if(e.key.toLowerCase()==='i'){
+// INSPECTION MODE
+document.addEventListener('keydown', e => {
+  if(e.key.toLowerCase() === 'i'){
     document.body.classList.toggle('inspect');
   }
 });
 
-/* triple click image swap */
-document.querySelectorAll('.swap').forEach(img=>{
-  let clicks=0;
-  img.addEventListener('click',()=>{
+// TRIPLE CLICK IMAGE SWAP
+document.querySelectorAll('.swap').forEach(img => {
+  let clicks = 0;
+  img.addEventListener('click', ()=>{
     clicks++;
     if(clicks===3){
-      [img.src,img.dataset.alt]=[img.dataset.alt,img.src];
+      [img.src,img.dataset.alt] = [img.dataset.alt,img.src];
       clicks=0;
     }
     setTimeout(()=>clicks=0,600);
   });
 });
 
-/* title change */
-const baseTitle=document.title;
-window.addEventListener('scroll',()=>{
-  if(window.scrollY>document.body.scrollHeight/3){
+// TITLE CHANGE
+const baseTitle = document.title;
+window.addEventListener('scroll', ()=>{
+  if(window.scrollY > document.body.scrollHeight/3){
     document.title='Kirill Pegankin — Iterating';
   } else {
     document.title=baseTitle;
   }
 });
 
-/* slow-scroll reward */
+// SLOW SCROLL REWARD
 let rewarded=false;
-window.addEventListener('scroll',()=>{
-  if(!rewarded && window.scrollY+window.innerHeight>=document.body.scrollHeight-5){
-    document.querySelector('footer').insertAdjacentHTML(
+window.addEventListener('scroll', ()=>{
+  if(!rewarded && window.scrollY + window.innerHeight >= document.body.scrollHeight-5){
+    document.getElementById('footer').insertAdjacentHTML(
       'afterbegin',
       '<div style="font-size:.8rem;margin-bottom:8px;">Still here? You’d like the workshop.</div>'
     );
@@ -316,13 +343,54 @@ window.addEventListener('scroll',()=>{
   }
 });
 
-/* URL mode */
+// URL MODE
 if(new URLSearchParams(location.search).get('mode')==='shop'){
   document.body.insertAdjacentHTML(
     'afterbegin',
     '<div style="position:fixed;top:10px;left:10px;font-size:.75rem;color:var(--muted);z-index:999;">Workshop context enabled</div>'
   );
 }
+
+// HIDDEN PERSONAL SIGNATURE
+let sig = '';
+document.addEventListener('keydown', e => {
+  sig += e.key.toLowerCase();
+  if(!'workshop'.startsWith(sig)) sig='';
+  if(sig==='workshop'){
+    const el = document.querySelector('.signature');
+    el.classList.add('show');
+    setTimeout(()=>el.classList.remove('show'),3000);
+    sig='';
+  }
+});
+
+// MIDNIGHT FOOTER
+const now = new Date();
+if(now.getHours()===0 && now.getMinutes()<5){
+  document.getElementById('footer-line').textContent='The workshop is quiet.';
+}
+
+// SILENCE DOT (10s no interaction)
+let idleTimer;
+const dot = document.createElement('div');
+dot.style.position='fixed';
+dot.style.bottom='12px';
+dot.style.right='12px';
+dot.style.width='8px';
+dot.style.height='8px';
+dot.style.borderRadius='50%';
+dot.style.backgroundColor= 'var(--accent)';
+dot.style.opacity='0';
+dot.style.transition='opacity .3s ease';
+document.body.appendChild(dot);
+
+function resetIdle(){
+  dot.style.opacity='0';
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(()=>{ dot.style.opacity='1'; },10000);
+}
+['mousemove','keydown','scroll','touchstart'].forEach(ev => document.addEventListener(ev, resetIdle));
+resetIdle();
 </script>
 
 </body>
