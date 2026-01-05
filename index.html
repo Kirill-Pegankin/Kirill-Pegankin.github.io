@@ -1,344 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Kirill Pegankin | Portfolio</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/png" href="K.png" />
+<meta charset="UTF-8">
+<title>Kirill Pegankin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    :root {
-      --bg: #0b0d10;
-      --panel: rgba(255,255,255,0.08);
-      --accent: #00b3ff;
-      --accent-2: #6cf2c2;
-      --text: #e6e6e6;
-      --muted: #9aa0a6;
-      --radius: 16px;
-    }
+<style>
+:root {
+  --bg: #0a0a0a;
+  --fg: #f2f2f2;
+  --muted: #9a9a9a;
+  --line: #2a2a2a;
+  --accent: #00aaff;
+}
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      font-family: Inter, Segoe UI, system-ui, sans-serif;
-      background: radial-gradient(circle at top, #111827, #050608);
-      color: var(--text);
-      line-height: 1.6;
-    }
+body {
+  font-family: Inter, system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+}
 
-    a { color: inherit; text-decoration: none; }
+a { color: inherit; text-decoration: none; }
 
-    /* NAV */
-    nav {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 28px;
-      padding: 14px 28px;
-      background: rgba(0,0,0,0.55);
-      backdrop-filter: blur(14px);
-      border-radius: 999px;
-      z-index: 1000;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-    }
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 80px 20px;
+}
 
-    nav a {
-      font-weight: 600;
-      color: var(--muted);
-      transition: color .3s ease;
-    }
+/* HEADER */
+header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+  min-height: 90vh;
+}
 
-    nav a:hover { color: var(--accent); }
+header h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.1;
+}
 
-    /* HERO */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 80px 20px;
-    }
+header p {
+  margin-top: 24px;
+  color: var(--muted);
+  font-size: 1.1rem;
+  max-width: 480px;
+}
 
-    .hero img {
-      width: 160px;
-      height: 160px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid var(--accent);
-      box-shadow: 0 0 60px rgba(0,179,255,0.5);
-      margin-bottom: 30px;
-    }
+header img {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}
 
-    .hero h1 {
-      font-size: clamp(2.8rem, 5vw, 4rem);
-      letter-spacing: -1px;
-    }
+/* SECTIONS */
+section {
+  border-top: 1px solid var(--line);
+}
 
-    .hero p {
-      font-size: 1.3rem;
-      color: var(--muted);
-      margin: 20px 0 40px;
-    }
+section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 40px;
+}
 
-    .hero .actions {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
+/* ABOUT */
+.about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
 
-    .btn {
-      padding: 14px 34px;
-      border-radius: 999px;
-      font-weight: 600;
-      transition: transform .3s ease, box-shadow .3s ease, background .3s ease;
-    }
+.about p {
+  color: var(--muted);
+  font-size: 1.05rem;
+}
 
-    .btn.primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: #000;
-      box-shadow: 0 10px 40px rgba(0,179,255,0.4);
-    }
+/* SKILLS */
+.skills {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
 
-    .btn.primary:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 60px rgba(0,179,255,0.6);
-    }
+.skill {
+  border: 1px solid var(--line);
+  padding: 20px;
+  font-weight: 600;
+}
 
-    .btn.ghost {
-      border: 1px solid rgba(255,255,255,0.2);
-      color: var(--text);
-    }
+/* PROJECTS */
+.projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
 
-    .btn.ghost:hover { background: rgba(255,255,255,0.08); }
+.project {
+  border: 1px solid var(--line);
+}
 
-    /* SECTIONS */
-    section {
-      max-width: 1200px;
-      margin: auto;
-      padding: 120px 20px;
-    }
+.project img {
+  width: 100%;
+  display: block;
+}
 
-    section h2 {
-      font-size: 2.4rem;
-      margin-bottom: 60px;
-      text-align: center;
-      letter-spacing: -0.5px;
-    }
+.project div {
+  padding: 16px;
+}
 
-    /* ABOUT */
-    .about {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 50px;
-      align-items: center;
-    }
+.project h3 {
+  font-size: 1.1rem;
+}
 
-    .about img {
-      width: 100%;
-      border-radius: var(--radius);
-      box-shadow: 0 30px 80px rgba(0,0,0,0.6);
-    }
+.project span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
 
-    .about p {
-      font-size: 1.1rem;
-      color: var(--muted);
-      margin-bottom: 20px;
-    }
+/* CONTACT */
+.contact a {
+  display: block;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+  font-weight: 600;
+}
 
-    /* SKILLS */
-    .skills {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-    }
+footer {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+}
 
-    .skill {
-      background: var(--panel);
-      backdrop-filter: blur(12px);
-      padding: 30px;
-      border-radius: var(--radius);
-      font-weight: 600;
-      text-align: center;
-      transition: transform .3s ease, box-shadow .3s ease;
-    }
-
-    .skill:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-    }
-
-    /* PROJECTS */
-    .projects {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 30px;
-    }
-
-    .project {
-      border-radius: var(--radius);
-      overflow: hidden;
-      position: relative;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-      transition: transform .4s ease;
-    }
-
-    .project img {
-      width: 100%;
-      display: block;
-    }
-
-    .project::after {
-      content: "View Project";
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0,0,0,0.6);
-      opacity: 0;
-      font-weight: 700;
-      letter-spacing: 1px;
-      transition: opacity .3s ease;
-    }
-
-    .project:hover::after { opacity: 1; }
-    .project:hover { transform: translateY(-12px); }
-
-    /* CONTACT */
-    .contact {
-      text-align: center;
-    }
-
-    .contact a {
-      display: inline-block;
-      margin: 12px;
-      padding: 14px 26px;
-      border-radius: 999px;
-      background: var(--panel);
-      backdrop-filter: blur(12px);
-      transition: background .3s ease, transform .3s ease;
-    }
-
-    .contact a:hover {
-      background: rgba(255,255,255,0.18);
-      transform: translateY(-4px);
-    }
-
-    footer {
-      padding: 60px 20px;
-      text-align: center;
-      color: var(--muted);
-    }
-
-    @media (max-width: 768px) {
-      nav { gap: 18px; padding: 12px 20px; }
-    }
-  </style>
+@media (max-width: 900px) {
+  header, .about {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
 </head>
+
 <body>
 
-  <nav>
-    <a href="#about">About</a>
-    <a href="#skills">Skills</a>
-    <a href="#projects">Projects</a>
-    <a href="#contact">Contact</a>
-  </nav>
-
-  <section class="hero">
-    <img src="IMG_3000.png" alt="Kirill Pegankin" />
+<header class="container">
+  <div>
     <h1>Kirill Pegankin</h1>
-    <p>Engineer · Designer · Builder</p>
-    <div class="actions">
-      <a class="btn primary" href="#projects">View Work</a>
-      <a class="btn ghost" href="#about">About Me</a>
-    </div>
-  </section>
+    <p>
+      I design and build physical systems.
+      CAD to real parts.
+      Tested, iterated, and rebuilt until they work.
+    </p>
+  </div>
+  <img src="IMG_3000.png" alt="Kirill">
+</header>
 
-  <section id="about">
+<section>
+  <div class="container about">
     <h2>About</h2>
-    <div class="about">
-      <img src="IMG_1606.jpeg" alt="About Kirill" />
-      <div>
-        <p>I design and build practical engineering solutions with a strong focus on precision, clarity, and usability.</p>
-        <p>My work blends digital design, 3D manufacturing, and hands-on prototyping.</p>
-      </div>
-    </div>
-  </section>
+    <p>
+      My work focuses on functional engineering projects—mechanisms,
+      enclosures, and devices designed for real use.
+      I combine 3D design, manufacturing, and hands-on testing.
+    </p>
+  </div>
+</section>
 
-  <section id="skills">
+<section>
+  <div class="container">
     <h2>Skills</h2>
     <div class="skills">
-      <div class="skill">3D Design — Fusion 360, FreeCAD, Tinkercad</div>
-      <div class="skill">3D Printing & Manufacturing</div>
-      <div class="skill">Engineering Drawings & Tolerances</div>
-      <div class="skill">Problem Solving & Prototyping</div>
+      <div class="skill">Fusion 360 / FreeCAD</div>
+      <div class="skill">3D Printing & Tolerances</div>
+      <div class="skill">Mechanical Prototyping</div>
+      <div class="skill">Iteration & Testing</div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="projects">
+<section>
+  <div class="container">
     <h2>Projects</h2>
     <div class="projects">
       <a class="project" href="project5.html">
-        <img src="IMG_3329.jpg" alt="Quiztendo Massive Game Toy" />
-        <div class="project-info">
+        <img src="IMG_3329.jpg">
+        <div>
           <h3>Gilbert Coin Dispenser</h3>
-          <span>2025</span>
+          <span>Designed, printed, and refined · 2025</span>
         </div>
       </a>
-      
+
       <a class="project" href="project4.html">
-        <img src="IMG_2896.jpeg" alt="Quiztendo Massive Game Toy" />
-        <div class="project-info">
-          <h3>Quiztendo Massive Game Toy</h3>
-          <span>2025</span>
+        <img src="IMG_2896.jpeg">
+        <div>
+          <h3>Quiztendo Game Toy</h3>
+          <span>Mechanical game system · 2025</span>
         </div>
       </a>
 
       <a class="project" href="project3.html">
-        <img src="IMG_3175 (1).jpeg" alt="Anemometer" />
-        <div class="project-info">
+        <img src="IMG_3175 (1).jpeg">
+        <div>
           <h3>Anemometer</h3>
-          <span>2025</span>
-        </div>
-      </a>
-
-      <a class="project" href="project2.html">
-        <img src="IMG_1606.jpeg" alt="Smart Recycling Bin" />
-        <div class="project-info">
-          <h3>Smart Recycling Bin</h3>
-          <span>2025</span>
-        </div>
-      </a>
-
-      <a class="project" href="project1.html">
-        <img src="IMG_1607.jpeg" alt="Cell Project" />
-        <div class="project-info">
-          <h3>Cell Project</h3>
-          <span>2024</span>
+          <span>Measurement device · 2025</span>
         </div>
       </a>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="contact">
+<section>
+  <div class="container">
     <h2>Contact</h2>
     <div class="contact">
       <a href="mailto:Kir.pegankin@gmail.com">Kir.pegankin@gmail.com</a>
-      <a href="mailto:kpegankin31@troyschools.org">School Email</a>
       <a href="https://www.printables.com/@KirillPegank_1843990" target="_blank">Printables</a>
       <a href="https://www.myminifactory.com/users/kirillpegankin" target="_blank">MyMiniFactory</a>
-      <a href="https://www.chess.com/member/kirillpeg" target="_blank">Chess.com</a>
     </div>
-  </section>
+  </div>
+</section>
 
-  <footer>
-    © 2025 Kirill Pegankin
-  </footer>
+<footer>
+  © 2025 Kirill Pegankin
+</footer>
 
 </body>
 </html>
