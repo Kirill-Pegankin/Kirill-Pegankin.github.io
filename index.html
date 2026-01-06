@@ -117,15 +117,14 @@ section h2 {
   padding:16px;
   background:#111;
   color:#f2f2f2;
+  width:280px;
+  height:180px;
 }
 
 .project img {
   width:100%;
-  display:block;
-}
-
-.project div {
-  padding:16px;
+  height:100%;
+  object-fit:cover;
 }
 
 /* FOOTER */
@@ -189,18 +188,8 @@ footer {
   z-index: 900;
 }
 
-.caution-top { }
-.caution-bottom { }
-
-@keyframes rollIn {
-  from { width: 0; }
-  to { width: 100%; }
-}
-
-@keyframes rollOut {
-  from { width: 100%; }
-  to { width: 0; }
-}
+@keyframes rollIn { from{width:0;} to{width:100%;} }
+@keyframes rollOut { from{width:100%;} to{width:0;} }
 </style>
 </head>
 <body>
@@ -272,13 +261,13 @@ const ARM_SPEED = 800;
 const BEND_TO_IMAGE = { lowerAngle: 40, upperAngle: 80 };
 const BEND_TO_GALLERY = { lowerAngle: 0, upperAngle: 0 };
 
-// Project data
+// Project images
 const projectCardsData = [
-  { title: "Cell Project", note: "tested energy cell stability" },
-  { title: "Anemometer", note: "measurement error reduced by redesign" },
-  { title: "Smart Recycling Bin", note: "final prototype included sensor feedback" },
-  { title: "Quiztendo Massive Game Toy", note: "gear tolerances adjusted ±0.15mm" },
-  { title: "Gilbert Coin Dispenser", note: "v6 — first version that survived repeated use" },
+  { title: "Cell Project", img: "https://picsum.photos/id/1011/280/180" },
+  { title: "Anemometer", img: "https://picsum.photos/id/1021/280/180" },
+  { title: "Smart Recycling Bin", img: "https://picsum.photos/id/1031/280/180" },
+  { title: "Quiztendo Massive Game Toy", img: "https://picsum.photos/id/1041/280/180" },
+  { title: "Gilbert Coin Dispenser", img: "https://picsum.photos/id/1051/280/180" },
 ];
 
 // Create offscreen cards
@@ -286,12 +275,12 @@ const offscreenCards = [];
 projectCardsData.forEach(data => {
   const card = document.createElement('div');
   card.className = 'project';
-  card.innerHTML = `<h3>${data.title}</h3><div>${data.note}</div>`;
+  card.innerHTML = `<img src="${data.img}" alt="${data.title}">`;
   card.style.position = 'absolute';
   card.style.width = '280px';
   card.style.height = '180px';
   card.style.top = '0';
-  card.style.right = '-350px'; // far right
+  card.style.right = '-350px'; // offscreen
   offscreenCards.push(card);
   document.body.appendChild(card);
 });
@@ -312,7 +301,7 @@ function moveGripper(card,duration=ARM_SPEED,cb){
   card.style.transition=`all ${duration}ms ease-in-out`;
   card.style.left='-20px';
   card.style.top='-20px';
-  card.style.transform='scale(1.1) rotate(180deg)'; // upright
+  card.style.transform='scale(1.1) rotate(180deg)'; // upright in hand
   if(cb) setTimeout(cb,duration);
 }
 
