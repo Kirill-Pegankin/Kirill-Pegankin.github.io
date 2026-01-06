@@ -141,6 +141,7 @@ section h2 {
 .robot-container {
   position: absolute;
   top: 50%;
+  right: 0;
   transform: translateY(-50%) rotate(180deg);
   width: 750px;
   height: 80px;
@@ -192,6 +193,7 @@ section h2 {
   z-index: 100;
   width: 0;
   overflow: hidden;
+  transition: width 3s ease;
 }
 </style>
 </head>
@@ -304,7 +306,7 @@ function moveGripper(card, duration = ARM_SPEED, callback){
   card.style.transition = `all ${duration}ms ease-in-out`;
   card.style.right = '0px';
   card.style.top = '0px';
-  card.style.transform = 'rotate(0deg)'; // fixed upright
+  card.style.transform = 'rotate(0deg)'; // always upright
   if(callback) setTimeout(callback, duration);
 }
 
@@ -338,7 +340,7 @@ function grabNext(){
 
 // SEQUENCE: 2s delay -> 3s tape roll -> robot slides in
 setTimeout(()=>{
-  tapes.forEach(t=>{ t.style.transition='width 3s ease'; t.style.width='100%'; });
+  tapes.forEach(t=>{ t.style.width='0'; t.offsetWidth; t.style.width='100%'; }); // roll top & bottom
   setTimeout(()=>{
     robot.style.transition='right 0.5s ease-in-out';
     robot.style.right='0px';
