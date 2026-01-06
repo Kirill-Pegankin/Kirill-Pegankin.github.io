@@ -104,15 +104,23 @@ section h2 {
   font-weight:600;
 }
 
+/* PROJECTS WRAPPER */
+.projects-wrapper {
+  position: relative;
+}
+
 /* PROJECTS */
 .projects {
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
   gap:30px;
+  position: relative; /* to anchor robot and tape */
 }
 
 .project {
   border:1px solid var(--line);
+  position: absolute; /* allow robot to drag */
+  background:var(--bg);
 }
 
 .project.imperfect {
@@ -206,6 +214,65 @@ footer {
     margin-bottom: 20px;
   }
 }
+
+/* ROBOT AND TAPE */
+.caution-tape {
+  position: absolute;
+  height: 40px;
+  background: repeating-linear-gradient(45deg, yellow 0 20px, black 20px 40px);
+  z-index: 100;
+  width: 0;
+  overflow: hidden;
+}
+
+.caution-top { top: 0; }
+.caution-bottom { bottom: 0; }
+
+@keyframes rollIn { from { width:0; } to { width:100%; } }
+@keyframes rollOut { from { width:100%; } to { width:0; } }
+
+.robot-container {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%) rotate(180deg);
+  width: 750px;
+  height: 80px;
+  filter: drop-shadow(0 5px 5px rgba(0,0,0,0.6));
+  right: -800px; /* start offscreen */
+  z-index:200;
+}
+
+.lower-arm {
+  width: 450px;
+  height: 20px;
+  background: #777;
+  position: absolute;
+  top: 30px;
+  left: 0;
+  transform-origin: left center;
+  border-radius: 10px;
+}
+
+.upper-arm {
+  width: 300px;
+  height: 20px;
+  background: #999;
+  position: absolute;
+  top: 0;
+  left: 450px;
+  transform-origin: left center;
+  border-radius: 10px;
+}
+
+.gripper {
+  width: 40px;
+  height: 40px;
+  background: #ff4500;
+  border-radius: 50%;
+  position: absolute;
+  top: -10px;
+  left: 300px;
+}
 </style>
 </head>
 
@@ -214,22 +281,15 @@ footer {
 <header class="container">
   <div>
     <h1>Kirill Pegankin</h1>
-    <p>
-      I design and build physical systems.
-      CAD to real parts.
-      Tested, iterated, rebuilt.
-    </p>
+    <p>I design and build physical systems. CAD to real parts. Tested, iterated, rebuilt.</p>
   </div>
-  <img src="IMG_3000.png" alt="final portrait after multiple lighting tests">
+  <img src="IMG_3000.png" alt="final portrait">
 </header>
 
 <section>
   <div class="container about">
     <h2>About</h2>
-    <p>
-      My work focuses on functional engineering projects—mechanisms,
-      enclosures, and devices designed for real use.
-    </p>
+    <p>My work focuses on functional engineering projects—mechanisms, enclosures, and devices designed for real use.</p>
   </div>
 </section>
 
@@ -246,12 +306,11 @@ footer {
 </section>
 
 <section>
-  <div class="container">
+  <div class="container projects-wrapper">
     <h2>Projects</h2>
     <div class="projects">
       <a class="project imperfect" href="project5.html">
-        <img src="IMG_3329.jpg" data-alt="IMG_3329_fail.jpg" class="swap"
-             alt="v4 failed due to shaft wobble under torque">
+        <img src="IMG_3329.jpg" alt="v4 failed due to shaft wobble under torque">
         <div data-note="v6 — first version that survived repeated use">
           <h3>Gilbert Coin Dispenser</h3>
           <span>2025</span>
@@ -290,6 +349,19 @@ footer {
         </div>
       </a>
     </div>
+
+    <!-- Robot + caution tape -->
+    <div class="caution-tape caution-top"></div>
+    <div class="caution-tape caution-bottom"></div>
+
+    <div class="robot-container">
+      <div class="lower-arm">
+        <div class="upper-arm">
+          <div class="gripper"></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -304,109 +376,117 @@ footer {
 <div class="signature">built, not styled</div>
 
 <script>
-// BLUEPRINT GRID
+// --- Existing Portfolio Scripts (inspection mode, triple click swap, title change, etc.) ---
 let seq='';
-document.addEventListener('keydown', e => {
-  seq += e.key.toLowerCase();
-  if(!'cad'.startsWith(seq)) seq = '';
-  if(seq === 'cad'){
-    const bp = document.querySelector('.blueprint');
-    bp.classList.add('show');
-    setTimeout(()=>bp.classList.remove('show'),5000);
-    seq = '';
-  }
-});
+document.addEventListener('keydown', e => { seq += e.key.toLowerCase(); if(!'cad'.startsWith(seq)) seq=''; if(seq==='cad'){ const bp=document.querySelector('.blueprint'); bp.classList.add('show'); setTimeout(()=>bp.classList.remove('show'),5000); seq=''; }});
 
-// INSPECTION MODE
-document.addEventListener('keydown', e => {
-  if(e.key.toLowerCase() === 'i'){
-    document.body.classList.toggle('inspect');
-  }
-});
+document.addEventListener('keydown', e => { if(e.key.toLowerCase() === 'i'){ document.body.classList.toggle('inspect'); }});
 
-// TRIPLE CLICK IMAGE SWAP
-document.querySelectorAll('.swap').forEach(img => {
-  let clicks = 0;
-  img.addEventListener('click', ()=>{
-    clicks++;
-    if(clicks===3){
-      [img.src,img.dataset.alt] = [img.dataset.alt,img.src];
-      clicks=0;
-    }
-    setTimeout(()=>clicks=0,600);
-  });
-});
+document.querySelectorAll('.swap').forEach(img => { let clicks=0; img.addEventListener('click', ()=>{ clicks++; if(clicks===3){ [img.src,img.dataset.alt] = [img.dataset.alt,img.src]; clicks=0; } setTimeout(()=>clicks=0,600); }); });
 
-// TITLE CHANGE
 const baseTitle = document.title;
-window.addEventListener('scroll', ()=>{
-  if(window.scrollY > document.body.scrollHeight/3){
-    document.title='Kirill Pegankin — Iterating';
-  } else {
-    document.title=baseTitle;
-  }
-});
+window.addEventListener('scroll', ()=>{ if(window.scrollY > document.body.scrollHeight/3){ document.title='Kirill Pegankin — Iterating'; } else{ document.title=baseTitle; }});
 
-// SLOW SCROLL REWARD
 let rewarded=false;
-window.addEventListener('scroll', ()=>{
-  if(!rewarded && window.scrollY + window.innerHeight >= document.body.scrollHeight-5){
-    document.getElementById('footer').insertAdjacentHTML(
-      'afterbegin',
-      '<div style="font-size:.8rem;margin-bottom:8px;">Still here? You’d like the workshop.</div>'
-    );
-    rewarded=true;
-  }
-});
+window.addEventListener('scroll', ()=>{ if(!rewarded && window.scrollY + window.innerHeight >= document.body.scrollHeight-5){ document.getElementById('footer').insertAdjacentHTML('afterbegin','<div style="font-size:.8rem;margin-bottom:8px;">Still here? You’d like the workshop.</div>'); rewarded=true; }});
 
-// URL MODE
-if(new URLSearchParams(location.search).get('mode')==='shop'){
-  document.body.insertAdjacentHTML(
-    'afterbegin',
-    '<div style="position:fixed;top:10px;left:10px;font-size:.75rem;color:var(--muted);z-index:999;">Workshop context enabled</div>'
-  );
-}
+if(new URLSearchParams(location.search).get('mode')==='shop'){ document.body.insertAdjacentHTML('afterbegin','<div style="position:fixed;top:10px;left:10px;font-size:.75rem;color:var(--muted);z-index:999;">Workshop context enabled</div>'); }
 
-// HIDDEN PERSONAL SIGNATURE
-let sig = '';
-document.addEventListener('keydown', e => {
-  sig += e.key.toLowerCase();
-  if(!'workshop'.startsWith(sig)) sig='';
-  if(sig==='workshop'){
-    const el = document.querySelector('.signature');
-    el.classList.add('show');
-    setTimeout(()=>el.classList.remove('show'),3000);
-    sig='';
-  }
-});
+let sig=''; document.addEventListener('keydown', e=>{ sig+=e.key.toLowerCase(); if(!'workshop'.startsWith(sig)) sig=''; if(sig==='workshop'){ const el=document.querySelector('.signature'); el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),3000); sig=''; }});
 
-// MIDNIGHT FOOTER
 const now = new Date();
 if(now.getHours()===0 && now.getMinutes()<5){
   document.getElementById('footer-line').textContent='The workshop is quiet.';
 }
 
-// SILENCE DOT (10s no interaction)
-let idleTimer;
-const dot = document.createElement('div');
-dot.style.position='fixed';
-dot.style.bottom='12px';
-dot.style.right='12px';
-dot.style.width='8px';
-dot.style.height='8px';
-dot.style.borderRadius='50%';
-dot.style.backgroundColor= 'var(--accent)';
-dot.style.opacity='0';
-dot.style.transition='opacity .3s ease';
-document.body.appendChild(dot);
+// --- Robot + Caution Tape Script ---
+const robot = document.querySelector('.robot-container');
+const lowerArm = robot.querySelector('.lower-arm');
+const upperArm = robot.querySelector('.upper-arm');
+const gripper = robot.querySelector('.gripper');
+const projectsSection = document.querySelector('.projects-wrapper');
+const projects = Array.from(projectsSection.querySelectorAll('.project'));
+const tapes = projectsSection.querySelectorAll('.caution-tape');
 
-function resetIdle(){
-  dot.style.opacity='0';
-  clearTimeout(idleTimer);
-  idleTimer = setTimeout(()=>{ dot.style.opacity='1'; },10000);
+const OFFSCREEN_RIGHT = -800;
+const ARM_SPEED = 800;
+const BEND_TO_IMAGE = { lowerAngle: 40, upperAngle: 80 };
+const BEND_TO_GALLERY = { lowerAngle: 0, upperAngle: 0 };
+
+// Start arm off-screen
+robot.style.right = OFFSCREEN_RIGHT + 'px';
+
+// Layout projects stack for robot
+function layoutStack() {
+  projects.forEach((proj, i) => {
+    proj.style.top = `${i*150}px`;
+    proj.style.left = '0px';
+    proj.style.zIndex = i;
+  });
 }
-['mousemove','keydown','scroll','touchstart'].forEach(ev => document.addEventListener(ev, resetIdle));
-resetIdle();
+layoutStack();
+
+// Rotate arms
+function rotateArm(lowerAngle, upperAngle, duration = ARM_SPEED, callback) {
+  lowerArm.style.transition = `transform ${duration}ms ease-in-out`;
+  upperArm.style.transition = `transform ${duration}ms ease-in-out`;
+  lowerArm.style.transform = `rotate(${lowerAngle}deg)`;
+  upperArm.style.transform = `rotate(${upperAngle}deg)`;
+  if(callback) setTimeout(callback, duration);
+}
+
+// Move gripper with project
+function moveGripper(proj, duration = ARM_SPEED, callback) {
+  proj.style.transition = `all ${duration}ms ease-in-out`;
+  proj.style.left = '-20px';
+  proj.style.top = '-20px';
+  proj.style.transform = 'scale(1.05) rotate(0deg)';
+  if(callback) setTimeout(callback, duration);
+}
+
+// Grab next project card
+function grabNext() {
+  if(projects.length===0){
+    robot.style.transition='right 1s ease-in-out';
+    robot.style.right=OFFSCREEN_RIGHT+'px';
+    setTimeout(()=>{ tapes.forEach(t=>{ t.style.animation='rollOut 3s ease forwards'; }); },1000);
+    return;
+  }
+
+  const proj = projects.shift();
+
+  rotateArm(BEND_TO_IMAGE.lowerAngle, BEND_TO_IMAGE.upperAngle, ARM_SPEED, ()=>{
+    proj.style.position='absolute';
+    proj.style.zIndex='100';
+    gripper.appendChild(proj);
+    proj.style.left='-20px';
+    proj.style.top='-20px';
+    proj.style.width='260px';
+    proj.style.height='200px';
+
+    layoutStack(); // remaining projects fall
+
+    rotateArm(BEND_TO_GALLERY.lowerAngle, BEND_TO_GALLERY.upperAngle, ARM_SPEED, ()=>{
+      moveGripper(proj, ARM_SPEED, ()=>{
+        proj.style.position='static';
+        proj.style.width='100%';
+        proj.style.height='auto';
+        projectsSection.querySelector('.projects').appendChild(proj);
+        setTimeout(grabNext, 300);
+      });
+    });
+  });
+}
+
+// Sequence: 2s delay -> 3s tape roll -> robot slides in
+setTimeout(()=>{
+  tapes.forEach(t=>{ t.style.animation='rollIn 3s ease forwards'; });
+  setTimeout(()=>{
+    robot.style.transition='right 0.5s ease-in-out';
+    robot.style.right='0px';
+    setTimeout(grabNext,500);
+  },3000);
+},2000);
 </script>
 
 </body>
