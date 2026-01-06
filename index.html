@@ -74,7 +74,6 @@ section h2 {
 .about p {
   color:var(--muted);
   font-size:1.05rem;
-  position:relative;
 }
 
 /* SKILLS */
@@ -94,6 +93,7 @@ section h2 {
 .projects-section {
   position: relative;
   overflow: hidden;
+  min-height: 250px;
 }
 .projects {
   display:grid;
@@ -104,12 +104,12 @@ section h2 {
 }
 
 .project {
-  position: absolute; /* start offscreen, robot places it */
+  position: absolute; 
   width: 280px;
   height: 180px;
-  overflow: hidden;
   border:1px solid var(--line);
   border-radius:8px;
+  overflow:hidden;
 }
 
 .project img {
@@ -135,14 +135,6 @@ section h2 {
   font-size:.9rem;
   color:#fff;
   text-shadow:0 0 5px rgba(0,0,0,0.7);
-}
-
-/* FOOTER */
-footer {
-  text-align:center;
-  padding:40px 20px;
-  color:var(--muted);
-  border-top:1px solid var(--line);
 }
 
 /* ROBOT ARM */
@@ -188,7 +180,7 @@ footer {
   left: 300px;
 }
 
-/* CAUTION STRIPE */
+/* CAUTION STRIPES */
 .caution-tape {
   position: absolute;
   height: 40px;
@@ -208,11 +200,7 @@ footer {
 <header class="container">
   <div>
     <h1>Kirill Pegankin</h1>
-    <p>
-      I design and build physical systems.
-      CAD to real parts.
-      Tested, iterated, rebuilt.
-    </p>
+    <p>I design and build physical systems. CAD to real parts. Tested, iterated, rebuilt.</p>
   </div>
   <img src="IMG_3000.png" alt="final portrait after multiple lighting tests">
 </header>
@@ -220,10 +208,7 @@ footer {
 <section>
   <div class="container about">
     <h2>About</h2>
-    <p>
-      My work focuses on functional engineering projects—mechanisms,
-      enclosures, and devices designed for real use.
-    </p>
+    <p>My work focuses on functional engineering projects—mechanisms, enclosures, and devices designed for real use.</p>
   </div>
 </section>
 
@@ -256,9 +241,7 @@ footer {
 </section>
 
 <footer id="footer">
-  <div id="footer-line" style="font-size:.85rem; margin-bottom:10px;">
-    Most projects fail before they work.
-  </div>
+  <div id="footer-line" style="font-size:.85rem; margin-bottom:10px;">Most projects fail before they work.</div>
   © 2025 Kirill Pegankin
 </footer>
 
@@ -321,7 +304,7 @@ function moveGripper(card, duration = ARM_SPEED, callback){
   card.style.transition = `all ${duration}ms ease-in-out`;
   card.style.right = '0px';
   card.style.top = '0px';
-  card.style.transform = 'scale(1.0) rotate(0deg)';
+  card.style.transform = 'rotate(0deg)'; // fixed upright
   if(callback) setTimeout(callback, duration);
 }
 
@@ -341,7 +324,7 @@ function grabNext(){
     gripper.appendChild(card);
     card.style.left='-20px';
     card.style.top='-20px';
-    card.style.transform='rotate(0deg)';
+    card.style.transform='rotate(0deg)'; // always upright
 
     rotateArm(BEND_TO_GALLERY.lowerAngle,BEND_TO_GALLERY.upperAngle,ARM_SPEED,()=>{
       moveGripper(card, ARM_SPEED, ()=>{
@@ -355,7 +338,7 @@ function grabNext(){
 
 // SEQUENCE: 2s delay -> 3s tape roll -> robot slides in
 setTimeout(()=>{
-  tapes.forEach(t=>{ t.style.width='100%'; });
+  tapes.forEach(t=>{ t.style.transition='width 3s ease'; t.style.width='100%'; });
   setTimeout(()=>{
     robot.style.transition='right 0.5s ease-in-out';
     robot.style.right='0px';
