@@ -77,20 +77,6 @@ section h2 {
   position:relative;
 }
 
-.about p::after {
-  content:"Design without constraints is just decoration.";
-  display:block;
-  margin-top:12px;
-  font-size:.85rem;
-  opacity:0;
-  transition:opacity .3s ease;
-}
-
-.about p:hover::after {
-  transition-delay:2.5s;
-  opacity:1;
-}
-
 /* SKILLS */
 .skills {
   display:grid;
@@ -114,17 +100,40 @@ section h2 {
 
 .project {
   border:1px solid var(--line);
-  padding:16px;
   background:#111;
-  color:#f2f2f2;
   width:280px;
   height:180px;
+  overflow:hidden;
+  position:relative;
 }
 
 .project img {
   width:100%;
   height:100%;
   object-fit:cover;
+}
+
+.project h3 {
+  position:absolute;
+  bottom:8px;
+  left:8px;
+  font-size:1rem;
+  margin:0;
+  color:#fff;
+  background: rgba(0,0,0,0.5);
+  padding:2px 6px;
+  border-radius:4px;
+}
+
+.project span {
+  position:absolute;
+  bottom:8px;
+  right:8px;
+  font-size:.85rem;
+  color:#fff;
+  background: rgba(0,0,0,0.5);
+  padding:2px 6px;
+  border-radius:4px;
 }
 
 /* FOOTER */
@@ -261,33 +270,33 @@ const ARM_SPEED = 800;
 const BEND_TO_IMAGE = { lowerAngle: 40, upperAngle: 80 };
 const BEND_TO_GALLERY = { lowerAngle: 0, upperAngle: 0 };
 
-// Project images
+// Project cards info
 const projectCardsData = [
-  { title: "Cell Project", img: "https://picsum.photos/id/1011/280/180" },
-  { title: "Anemometer", img: "https://picsum.photos/id/1021/280/180" },
-  { title: "Smart Recycling Bin", img: "https://picsum.photos/id/1031/280/180" },
-  { title: "Quiztendo Massive Game Toy", img: "https://picsum.photos/id/1041/280/180" },
-  { title: "Gilbert Coin Dispenser", img: "https://picsum.photos/id/1051/280/180" },
+  { href:"project1.html", title:"Cell Project", year:"2024", img:"IMG_1607.jpeg" },
+  { href:"project3.html", title:"Anemometer", year:"2025", img:"IMG_3175 (1).jpeg" },
+  { href:"project2.html", title:"Smart Recycling Bin", year:"2025", img:"IMG_1606.jpeg" },
+  { href:"project4.html", title:"Quiztendo Massive Game Toy", year:"2025", img:"IMG_2896.jpeg" },
+  { href:"project5.html", title:"Gilbert Coin Dispenser", year:"2025", img:"IMG_3329.jpg" },
 ];
 
 // Create offscreen cards
 const offscreenCards = [];
-projectCardsData.forEach(data => {
-  const card = document.createElement('div');
-  card.className = 'project';
-  card.innerHTML = `<img src="${data.img}" alt="${data.title}">`;
-  card.style.position = 'absolute';
-  card.style.width = '280px';
-  card.style.height = '180px';
-  card.style.top = '0';
-  card.style.right = '-350px'; // offscreen
+projectCardsData.forEach(data=>{
+  const card = document.createElement('a');
+  card.className='project';
+  card.href=data.href;
+  card.innerHTML = `<img src="${data.img}" alt="${data.title}"><h3>${data.title}</h3><span>${data.year}</span>`;
+  card.style.position='absolute';
+  card.style.width='280px';
+  card.style.height='180px';
+  card.style.top='0';
+  card.style.right='-350px';
   offscreenCards.push(card);
   document.body.appendChild(card);
 });
 
 robot.style.right = OFFSCREEN_RIGHT + 'px';
 
-// Arm rotation
 function rotateArm(lowerAngle, upperAngle, duration=ARM_SPEED, callback){
   lowerArm.style.transition=`transform ${duration}ms ease-in-out`;
   upperArm.style.transition=`transform ${duration}ms ease-in-out`;
@@ -296,12 +305,11 @@ function rotateArm(lowerAngle, upperAngle, duration=ARM_SPEED, callback){
   if(callback) setTimeout(callback,duration);
 }
 
-// Move card with gripper
 function moveGripper(card,duration=ARM_SPEED,cb){
   card.style.transition=`all ${duration}ms ease-in-out`;
   card.style.left='-20px';
   card.style.top='-20px';
-  card.style.transform='scale(1.1) rotate(180deg)'; // upright in hand
+  card.style.transform='scale(1.1) rotate(180deg)';
   if(cb) setTimeout(cb,duration);
 }
 
@@ -310,9 +318,7 @@ function grabNext(){
   if(current>=offscreenCards.length){
     robot.style.transition='right 1s ease-in-out';
     robot.style.right=OFFSCREEN_RIGHT + 'px';
-    setTimeout(()=>{
-      tapes.forEach(t=>{ t.style.animation='rollOut 3s ease forwards'; });
-    },1000);
+    setTimeout(()=>{ tapes.forEach(t=>t.style.animation='rollOut 3s ease forwards'); },1000);
     return;
   }
   const card = offscreenCards[current];
@@ -326,7 +332,7 @@ function grabNext(){
         card.style.position='static';
         card.style.width='100%';
         card.style.height='180px';
-        card.style.transform=''; 
+        card.style.transform='';
         projectsGrid.appendChild(card);
         current++;
         setTimeout(grabNext,300);
