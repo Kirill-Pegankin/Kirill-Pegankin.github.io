@@ -126,7 +126,7 @@ section h2 {
 .robot-container {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%) rotate(180deg);
+  transform: translateY(-50%);
   width: 750px;
   height: 80px;
   filter: drop-shadow(0 5px 5px rgba(0,0,0,0.6));
@@ -167,11 +167,13 @@ section h2 {
 /* CAUTION STRIPES */
 .caution-tape {
   position: absolute;
+  left:0;
+  right:0;
+  width: 0;
   height: 40px;
   background: repeating-linear-gradient(45deg, yellow 0 20px, black 20px 40px);
-  z-index: 100;
-  width: 0;
   overflow: hidden;
+  z-index: 100;
 }
 
 .caution-top { top: 0; }
@@ -265,14 +267,6 @@ function rotateArm(lowerAngle, upperAngle, duration = ARM_SPEED, callback){
   if(callback) setTimeout(callback, duration);
 }
 
-function moveGripper(card, duration = ARM_SPEED, callback){
-  card.style.transition = `all ${duration}ms ease-in-out`;
-  card.style.left='-20px';
-  card.style.top='-20px';
-  card.style.transform='rotate(0deg)';
-  if(callback) setTimeout(callback, duration);
-}
-
 let current = 0;
 function grabNext(){
   if(current >= projectData.length){
@@ -288,27 +282,29 @@ function grabNext(){
   card.className='project';
   card.href=data.link;
   card.innerHTML=`<img src="${data.img}" alt="${data.title}"><h3>${data.title}</h3><span>${data.year}</span>`;
-  card.style.position='absolute';
-  card.style.left='-400px';
-  card.style.top='0px';
+  card.style.position='fixed';
+  card.style.left='100%';
+  card.style.top='50%';
   projectsGrid.appendChild(card);
 
   rotateArm(BEND_TO_PROJECT.lowerAngle,BEND_TO_PROJECT.upperAngle,ARM_SPEED,()=>{
-    gripper.appendChild(card);
-    card.style.left='-20px';
-    card.style.top='-20px';
-    card.style.width='180px';
-    card.style.height='120px';
-    card.style.transform='rotate(0deg)';
+    // move card to gripper
+    const gripRect = gripper.getBoundingClientRect();
+    card.style.transition = `all ${ARM_SPEED}ms ease-in-out`;
+    card.style.left = gripRect.left + 'px';
+    card.style.top = gripRect.top + 'px';
 
-    rotateArm(BEND_TO_GRID.lowerAngle,BEND_TO_GRID.upperAngle,ARM_SPEED,()=>{
-      moveGripper(card,ARM_SPEED,()=>{
-        card.style.position='static';
+    setTimeout(()=>{
+      rotateArm(BEND_TO_GRID.lowerAngle,BEND_TO_GRID.upperAngle,ARM_SPEED,()=>{
+        const gridRect = projectsGrid.getBoundingClientRect();
+        card.style.left = gridRect.left + (current*220) + 'px';
+        card.style.top = gridRect.top + 'px';
+        card.style.position = 'static';
         projectsGrid.appendChild(card);
         current++;
         setTimeout(grabNext,300);
       });
-    });
+    }, ARM_SPEED);
   });
 }
 
