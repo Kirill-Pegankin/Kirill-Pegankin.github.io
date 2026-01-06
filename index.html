@@ -282,13 +282,13 @@ function grabNext(){
   card.href=data.link;
   card.innerHTML=`<img src="${data.img}" alt="${data.title}"><h3>${data.title}</h3><span>${data.year}</span>`;
   card.style.position='absolute';
-  card.style.left='-400px';
+  card.style.right='-400px';
   card.style.top='0px';
   projectsGrid.appendChild(card);
 
   rotateArm(BEND_TO_PROJECT.lowerAngle,BEND_TO_PROJECT.upperAngle,ARM_SPEED,()=>{
     // simulate grab
-    card.style.left='-20px';
+    card.style.right='-20px';
     card.style.top='-20px';
     rotateArm(BEND_TO_GRID.lowerAngle,BEND_TO_GRID.upperAngle,ARM_SPEED,()=>{
       card.style.position='static';
