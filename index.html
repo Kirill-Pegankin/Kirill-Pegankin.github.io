@@ -104,12 +104,14 @@ section h2 {
 }
 
 .project {
+  position: absolute; /* offscreen animation */
   width: 280px;
   height: 180px;
   overflow: hidden;
   border:1px solid var(--line);
   border-radius:8px;
-  position: absolute; /* for offscreen animation */
+  /* add relative context for title/year */
+  position: absolute;
 }
 
 .project img {
@@ -200,6 +202,10 @@ footer {
   z-index: 100;
   width: 0;
   overflow: hidden;
+  top: 0;
+  left:0;
+  right:0;
+  transition: width 3s ease;
 }
 .caution-bottom { bottom:0; top:auto; }
 </style>
@@ -288,7 +294,7 @@ const projectCardsData = [
 ];
 
 const offscreenCards = [];
-projectCardsData.forEach((data,i)=>{
+projectCardsData.forEach(data=>{
   const card = document.createElement('a');
   card.className = 'project';
   card.href = data.href;
@@ -300,7 +306,7 @@ projectCardsData.forEach((data,i)=>{
   card.style.position = 'absolute';
   card.style.width = '280px';
   card.style.height = '180px';
-  card.style.top = `${i*10}px`;  // staggered vertical offset
+  card.style.top = '0';
   card.style.left = '-350px';
   offscreenCards.push(card);
   document.body.appendChild(card);
@@ -347,7 +353,7 @@ function grabNext(){
   });
 }
 
-// animate stripes and start robot
+// stripes and start
 setTimeout(()=>{
   tapes.forEach(t=>{ t.style.width='100%'; });
   setTimeout(()=>{
