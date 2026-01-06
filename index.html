@@ -103,10 +103,29 @@ section h2 {
   min-height: 160px;
 }
 
+.project {
+  width: 200px;
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: #fff;
+}
+
+.project img {
+  width: 180px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
 /* ROBOT */
 .robot-container {
   position: absolute;
-  top: 170%; /* aligned with projects section */
+  top: 170%;
   width: 750px;
   height: 80px;
   filter: drop-shadow(0 5px 5px rgba(0,0,0,0.6));
@@ -266,10 +285,10 @@ function grabNext(){
   projectsGrid.appendChild(card);
 
   rotateArm(BEND_TO_PROJECT.lowerAngle,BEND_TO_PROJECT.upperAngle,ARM_SPEED,()=>{
-    // FIX: rotate card while dragging
+    // FIX: rotate only the card while dragging
     card.style.transform = 'rotate(180deg)';
 
-    // move card into position near robot
+    // simulate grab movement
     card.style.left='-20px';
     card.style.top='-20px';
 
@@ -283,7 +302,7 @@ function grabNext(){
   });
 }
 
-// Sequence: 2s delay -> 3s stripes roll -> robot slides in
+// Animate both caution tapes and start robot sequence
 setTimeout(()=>{
   tapes.forEach(t=>t.style.animation='rollIn 3s ease forwards'); // top & bottom
   setTimeout(()=>{
