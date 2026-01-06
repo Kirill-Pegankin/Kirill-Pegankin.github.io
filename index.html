@@ -321,7 +321,7 @@ function moveGripper(card, duration = ARM_SPEED, callback){
   card.style.transition = `all ${duration}ms ease-in-out`;
   card.style.right = '0px';
   card.style.top = '0px';
-  card.style.transform = 'rotate(0deg)'; // FIX: rotate card upright
+  card.style.transform = 'rotate(0deg)'; // only rotate cards
   if(callback) setTimeout(callback, duration);
 }
 
@@ -352,9 +352,8 @@ function grabNext(){
   });
 }
 
-// Animate tapes and start sequence
 setTimeout(()=>{
-  tapes.forEach(t=>{ t.style.width='100%'; }); // top & bottom now animate
+  tapes.forEach(t=>{ t.style.width='100%'; });
   setTimeout(()=>{
     robot.style.transition='right 0.5s ease-in-out';
     robot.style.right='0px';
