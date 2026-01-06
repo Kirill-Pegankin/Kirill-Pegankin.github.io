@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>Kirill Pegankin</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 :root {
   --bg:#0a0a0a;
@@ -92,45 +93,67 @@ section h2 {
 /* PROJECTS */
 .projects-section {
   position: relative;
-  margin: 100px auto;
-  max-width: 1100px;
+  overflow: hidden;
 }
-
 .projects {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  min-height: 160px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:30px;
+  position: relative;
+  min-height: 200px;
 }
 
-/* STACKED IMAGES */
-.projects-stack {
-  position: absolute;
-  right: 50px; /* stack on right */
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column-reverse; /* topmost image last */
-  gap: 10px;
-  z-index: 10;
+.project {
+  position: absolute; /* start offscreen, robot places it */
+  width: 280px;
+  height: 180px;
+  overflow: hidden;
+  border:1px solid var(--line);
+  border-radius:8px;
 }
 
-.projects-stack img {
-  width: 180px;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 8px;
-  cursor: pointer;
+.project img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
-/* ROBOT */
+.project h3 {
+  position:absolute;
+  bottom:28px;
+  left:12px;
+  margin:0;
+  font-size:1.1rem;
+  color:#fff;
+  text-shadow:0 0 5px rgba(0,0,0,0.7);
+}
+
+.project span {
+  position:absolute;
+  bottom:8px;
+  left:12px;
+  font-size:.9rem;
+  color:#fff;
+  text-shadow:0 0 5px rgba(0,0,0,0.7);
+}
+
+/* FOOTER */
+footer {
+  text-align:center;
+  padding:40px 20px;
+  color:var(--muted);
+  border-top:1px solid var(--line);
+}
+
+/* ROBOT ARM */
 .robot-container {
   position: absolute;
-  top: 170%; /* aligned with projects */
-  transform: translateY(-50%) rotate(180deg); /* flipped */
+  top: 50%;
+  transform: translateY(-50%) rotate(180deg);
   width: 750px;
   height: 80px;
   filter: drop-shadow(0 5px 5px rgba(0,0,0,0.6));
+  z-index: 500;
 }
 
 .lower-arm {
@@ -165,24 +188,19 @@ section h2 {
   left: 300px;
 }
 
-/* CAUTION STRIPES */
+/* CAUTION STRIPE */
 .caution-tape {
   position: absolute;
-  left:0;
-  right:0;
-  width: 0;
   height: 40px;
-  background: repeating-linear-gradient(45deg, yellow 0 20px, black 20px 40px);
-  overflow: hidden;
+  background: repeating-linear-gradient(
+    45deg,
+    yellow 0 20px,
+    black 20px 40px
+  );
   z-index: 100;
+  width: 0;
+  overflow: hidden;
 }
-
-.caution-top { top: 0; }
-.caution-bottom { bottom: 0; }
-
-@keyframes rollIn { from { width: 0; } to { width: 100%; } }
-@keyframes rollOut { from { width: 100%; } to { width: 0; } }
-
 </style>
 </head>
 <body>
@@ -190,7 +208,11 @@ section h2 {
 <header class="container">
   <div>
     <h1>Kirill Pegankin</h1>
-    <p>I design and build physical systems—CAD to real parts. Tested, iterated, rebuilt.</p>
+    <p>
+      I design and build physical systems.
+      CAD to real parts.
+      Tested, iterated, rebuilt.
+    </p>
   </div>
   <img src="IMG_3000.png" alt="final portrait after multiple lighting tests">
 </header>
@@ -198,7 +220,10 @@ section h2 {
 <section>
   <div class="container about">
     <h2>About</h2>
-    <p>My work focuses on functional engineering projects—mechanisms, enclosures, and devices designed for real use.</p>
+    <p>
+      My work focuses on functional engineering projects—mechanisms,
+      enclosures, and devices designed for real use.
+    </p>
   </div>
 </section>
 
@@ -214,62 +239,76 @@ section h2 {
   </div>
 </section>
 
-<section class="projects-section">
-  <div class="caution-tape caution-top"></div>
-  <div class="caution-tape caution-bottom"></div>
+<section class="container projects-section">
   <h2>Projects</h2>
   <div class="projects"></div>
-  <div class="projects-stack"></div> <!-- stack of images -->
-</section>
 
-<div class="robot-container">
-  <div class="lower-arm">
-    <div class="upper-arm">
-      <div class="gripper"></div>
+  <div class="caution-tape caution-top"></div>
+  <div class="caution-tape caution-bottom"></div>
+
+  <div class="robot-container">
+    <div class="lower-arm">
+      <div class="upper-arm">
+        <div class="gripper"></div>
+      </div>
     </div>
   </div>
-</div>
+</section>
 
 <footer id="footer">
-  <div id="footer-line" style="font-size:.85rem; margin-bottom:10px;">Most projects fail before they work.</div>
+  <div id="footer-line" style="font-size:.85rem; margin-bottom:10px;">
+    Most projects fail before they work.
+  </div>
   © 2025 Kirill Pegankin
 </footer>
 
 <script>
+// PROJECT DATA
+const projectsGrid = document.querySelector('.projects');
 const robot = document.querySelector('.robot-container');
 const lowerArm = robot.querySelector('.lower-arm');
 const upperArm = robot.querySelector('.upper-arm');
 const gripper = robot.querySelector('.gripper');
-const projectsSection = document.querySelector('.projects-section');
-const projectsGrid = projectsSection.querySelector('.projects');
-const stackContainer = projectsSection.querySelector('.projects-stack');
-const tapes = projectsSection.querySelectorAll('.caution-tape');
+const tapes = document.querySelectorAll('.caution-tape');
 
 const OFFSCREEN_RIGHT = -800;
 const ARM_SPEED = 800;
-const BEND_TO_PROJECT = { lowerAngle: 40, upperAngle: 80 };
-const BEND_TO_GRID = { lowerAngle: 0, upperAngle: 0 };
+const BEND_TO_IMAGE = { lowerAngle: 40, upperAngle: 80 };
+const BEND_TO_GALLERY = { lowerAngle: 0, upperAngle: 0 };
 
-const projectData = [
-  { title: "Gilbert Coin Dispenser", year: 2025, link: "project5.html", img:"IMG_3329.jpg" },
-  { title: "Quiztendo Massive Game Toy", year: 2025, link: "project4.html", img:"IMG_2896.jpeg" },
-  { title: "Anemometer", year: 2025, link: "project3.html", img:"IMG_3175 (1).jpeg" },
-  { title: "Smart Recycling Bin", year: 2025, link: "project2.html", img:"IMG_1606.jpeg" },
-  { title: "Cell Project", year: 2024, link: "project1.html", img:"IMG_1607.jpeg" }
-];
-
+// ROBOT START OFFSCREEN
 robot.style.right = OFFSCREEN_RIGHT + 'px';
 
-// create stacked images
-const projectCards = projectData.map(data => {
-  const card = document.createElement('img');
-  card.src = data.img;
-  card.alt = data.title;
-  stackContainer.appendChild(card);
-  return card;
+const projectCardsData = [
+  { href:"project1.html", title:"Cell Project", year:"2024", img:"IMG_1607.jpeg" },
+  { href:"project3.html", title:"Anemometer", year:"2025", img:"IMG_3175 (1).jpeg" },
+  { href:"project2.html", title:"Smart Recycling Bin", year:"2025", img:"IMG_1606.jpeg" },
+  { href:"project4.html", title:"Quiztendo Massive Game Toy", year:"2025", img:"IMG_2896.jpeg" },
+  { href:"project5.html", title:"Gilbert Coin Dispenser", year:"2025", img:"IMG_3329.jpg" },
+];
+
+// CREATE OFFSCREEN CARDS
+const offscreenCards = [];
+projectCardsData.forEach(data=>{
+  const card = document.createElement('a');
+  card.className = 'project';
+  card.href = data.href;
+  card.innerHTML = `
+    <img src="${data.img}" alt="${data.title}">
+    <h3>${data.title}</h3>
+    <span>${data.year}</span>
+  `;
+  card.style.position = 'absolute';
+  card.style.width = '280px';
+  card.style.height = '180px';
+  card.style.top = '0';
+  card.style.right = '-350px'; // start offscreen
+  offscreenCards.push(card);
+  document.body.appendChild(card);
 });
 
-function rotateArm(lowerAngle, upperAngle, duration = ARM_SPEED, callback){
+// ROTATE ARM
+function rotateArm(lowerAngle, upperAngle, duration = ARM_SPEED, callback) {
   lowerArm.style.transition = `transform ${duration}ms ease-in-out`;
   upperArm.style.transition = `transform ${duration}ms ease-in-out`;
   lowerArm.style.transform = `rotate(${lowerAngle}deg)`;
@@ -277,46 +316,46 @@ function rotateArm(lowerAngle, upperAngle, duration = ARM_SPEED, callback){
   if(callback) setTimeout(callback, duration);
 }
 
-let currentIndex = projectCards.length - 1; // topmost image
+// MOVE GRIPPER
+function moveGripper(card, duration = ARM_SPEED, callback){
+  card.style.transition = `all ${duration}ms ease-in-out`;
+  card.style.right = '0px';
+  card.style.top = '0px';
+  card.style.transform = 'scale(1.0) rotate(0deg)';
+  if(callback) setTimeout(callback, duration);
+}
 
+// GRAB NEXT CARD
 function grabNext(){
-  if(currentIndex < 0){
+  if(offscreenCards.length===0){
     robot.style.transition='right 1s ease-in-out';
     robot.style.right=OFFSCREEN_RIGHT+'px';
-    setTimeout(()=>tapes.forEach(t=>t.style.animation='rollOut 3s ease forwards'),1000);
+    setTimeout(()=>{ tapes.forEach(t=>t.style.width='0'); },1000);
     return;
   }
 
-  const card = projectCards[currentIndex];
+  const card = offscreenCards.shift();
 
-  rotateArm(BEND_TO_PROJECT.lowerAngle,BEND_TO_PROJECT.upperAngle,ARM_SPEED,()=>{
-    // grab image
-    const rect = card.getBoundingClientRect();
-    card.style.position='fixed';
-    card.style.left = rect.left + 'px';
-    card.style.top = rect.top + 'px';
-    card.style.zIndex = 100;
+  rotateArm(BEND_TO_IMAGE.lowerAngle,BEND_TO_IMAGE.upperAngle,ARM_SPEED,()=>{
+    card.style.zIndex='10';
+    gripper.appendChild(card);
+    card.style.left='-20px';
+    card.style.top='-20px';
+    card.style.transform='rotate(0deg)';
 
-    // move to gallery
-    card.style.transition = `all ${ARM_SPEED}ms ease-in-out`;
-    const galleryRect = projectsGrid.getBoundingClientRect();
-    card.style.left = galleryRect.left + 10 + 'px';
-    card.style.top = galleryRect.top + 10 + 'px';
-
-    setTimeout(()=>{
-      // place in grid
-      card.style.position='static';
-      card.style.transition='';
-      projectsGrid.appendChild(card);
-      currentIndex--;
-      grabNext();
-    }, ARM_SPEED);
+    rotateArm(BEND_TO_GALLERY.lowerAngle,BEND_TO_GALLERY.upperAngle,ARM_SPEED,()=>{
+      moveGripper(card, ARM_SPEED, ()=>{
+        card.style.position='static';
+        projectsGrid.appendChild(card);
+        setTimeout(grabNext,300);
+      });
+    });
   });
 }
 
-// Sequence: delay -> stripes roll in -> robot slides in -> grab stack
+// SEQUENCE: 2s delay -> 3s tape roll -> robot slides in
 setTimeout(()=>{
-  tapes.forEach(t=>t.style.animation='rollIn 3s ease forwards');
+  tapes.forEach(t=>{ t.style.width='100%'; });
   setTimeout(()=>{
     robot.style.transition='right 0.5s ease-in-out';
     robot.style.right='0px';
@@ -324,5 +363,6 @@ setTimeout(()=>{
   },3000);
 },2000);
 </script>
+
 </body>
 </html>
