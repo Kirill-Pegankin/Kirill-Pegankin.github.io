@@ -1,215 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Kirill Pegankin</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Kirill Pegankin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-:root {
-  --bg:#0a0a0a;
-  --fg:#f2f2f2;
-  --muted:#9a9a9a;
-  --line:#2a2a2a;
-  --accent:#00aaff;
-}
+  <style>
+    :root {
+      --bg:#0a0a0a;
+      --fg:#f2f2f2;
+      --muted:#9a9a9a;
+      --line:#2a2a2a;
+      --accent:#00aaff;
+    }
 
-* { box-sizing:border-box; margin:0; padding:0; }
+    * {
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
 
-body {
-  font-family: Inter, system-ui, sans-serif;
-  background:var(--bg);
-  color:var(--fg);
-}
+    body {
+      font-family: Inter, system-ui, sans-serif;
+      background:var(--bg);
+      color:var(--fg);
+    }
 
-a { color:inherit; text-decoration:none; }
+    a {
+      color:inherit;
+      text-decoration:none;
+    }
 
-.container {
-  max-width:1100px;
-  margin:auto;
-  padding:80px 20px;
-}
+    .container {
+      max-width:1100px;
+      margin:auto;
+      padding:80px 20px;
+    }
 
-/* HEADER */
-header {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:40px;
-  align-items:center;
-  min-height:90vh;
-}
+    /* HEADER */
+    header {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:40px;
+      align-items:center;
+      min-height:90vh;
+    }
 
-header h1 {
-  font-size:clamp(2.5rem,5vw,4rem);
-  line-height:1.1;
-}
+    header h1 {
+      font-size:clamp(2.5rem,5vw,4rem);
+      line-height:1.1;
+    }
 
-header p {
-  margin-top:24px;
-  color:var(--muted);
-  max-width:480px;
-}
+    header p {
+      margin-top:24px;
+      color:var(--muted);
+      max-width:480px;
+    }
 
-header img {
-  width:100%;
-  border-radius:12px;
-  border:1px solid var(--line);
-}
+    header img {
+      width:100%;
+      border-radius:12px;
+      border:1px solid var(--line);
+    }
 
-/* SECTIONS */
-section { border-top:1px solid var(--line); }
+    /* SECTIONS */
+    section {
+      border-top:1px solid var(--line);
+    }
 
-section h2 {
-  font-size:1.8rem;
-  margin-bottom:40px;
-}
+    section h2 {
+      font-size:1.8rem;
+      margin-bottom:40px;
+    }
 
-/* ABOUT */
-.about {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:40px;
-}
+    /* ABOUT */
+    .about {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:40px;
+    }
 
-.about p {
-  color:var(--muted);
-  font-size:1.05rem;
-  position:relative;
-}
+    .about p {
+      color:var(--muted);
+      font-size:1.05rem;
+      position:relative;
+    }
 
-/* SKILLS */
-.skills {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:20px;
-}
+    .about p::after {
+      content:"Design without constraints is just decoration.";
+      display:block;
+      margin-top:12px;
+      font-size:.85rem;
+      opacity:0;
+      transition:opacity .3s ease;
+    }
 
-.skill {
-  border:1px solid var(--line);
-  padding:20px;
-  font-weight:600;
-}
+    .about p:hover::after {
+      transition-delay:2.5s;
+      opacity:1;
+    }
 
-/* PROJECTS */
-.projects-section {
-  position: relative;
-  overflow: hidden;
-}
-.projects {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:30px;
-  position: relative;
-  min-height: 200px;
-}
+    /* SKILLS */
+    .skills {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:20px;
+    }
 
-.project {
-  position: absolute; /* offscreen animation */
-  width: 280px;
-  height: 180px;
-  overflow: hidden;
-  border:1px solid var(--line);
-  border-radius:8px;
-  /* add relative context for title/year */
-  position: absolute;
-}
+    .skill {
+      border:1px solid var(--line);
+      padding:20px;
+      font-weight:600;
+    }
 
-.project img {
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
+    /* PROJECTS */
+    .projects {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:30px;
+    }
 
-.project h3 {
-  position:absolute;
-  bottom:28px;
-  left:12px;
-  margin:0;
-  font-size:1.1rem;
-  color:#fff;
-  text-shadow:0 0 5px rgba(0,0,0,0.7);
-}
+    .project {
+      border:1px solid var(--line);
+    }
 
-.project span {
-  position:absolute;
-  bottom:8px;
-  left:12px;
-  font-size:.9rem;
-  color:#fff;
-  text-shadow:0 0 5px rgba(0,0,0,0.7);
-}
+    .project.imperfect {
+      transform:translateY(6px);
+    }
 
-/* FOOTER */
-footer {
-  text-align:center;
-  padding:40px 20px;
-  color:var(--muted);
-  border-top:1px solid var(--line);
-}
+    .project img {
+      width:100%;
+      display:block;
+    }
 
-/* ROBOT ARM */
-.robot-container {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 750px;
-  height: 80px;
-  filter: drop-shadow(0 5px 5px rgba(0,0,0,0.6));
-  z-index: 500;
-}
+    .project div {
+      padding:16px;
+    }
 
-.lower-arm {
-  width: 450px;
-  height: 20px;
-  background: #777;
-  position: absolute;
-  top: 30px;
-  left: 0;
-  transform-origin: left center;
-  border-radius: 10px;
-}
+    .project div::after {
+      content:attr(data-note);
+      display:block;
+      margin-top:8px;
+      font-size:.85rem;
+      color:var(--muted);
+      opacity:0;
+      transition:opacity .3s ease;
+    }
 
-.upper-arm {
-  width: 300px;
-  height: 20px;
-  background: #999;
-  position: absolute;
-  top: 0;
-  left: 450px;
-  transform-origin: left center;
-  border-radius: 10px;
-}
+    .project:hover div::after {
+      transition-delay:3s;
+      opacity:1;
+    }
 
-.gripper {
-  width: 40px;
-  height: 40px;
-  background: #ff4500;
-  border-radius: 50%;
-  position: absolute;
-  top: -10px;
-  left: 300px;
-}
+    /* FOOTER */
+    footer {
+      text-align:center;
+      padding:40px 20px;
+      color:var(--muted);
+      border-top:1px solid var(--line);
+    }
 
-/* CAUTION STRIPE */
-.caution-tape {
-  position: absolute;
-  height: 40px;
-  background: repeating-linear-gradient(
-    45deg,
-    yellow 0 20px,
-    black 20px 40px
-  );
-  z-index: 100;
-  width: 0;
-  overflow: hidden;
-  top: 0;
-  left:0;
-  right:0;
-  transition: width 3s ease;
-}
-.caution-bottom { bottom:0; top:auto; }
-</style>
+    /* BLUEPRINT GRID */
+    .blueprint {
+      position:fixed;
+      inset:0;
+      background-image:
+        linear-gradient(rgba(0,170,255,.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,170,255,.08) 1px, transparent 1px);
+      background-size:40px 40px;
+      pointer-events:none;
+      opacity:0;
+      transition:opacity .3s ease;
+      z-index:9999;
+    }
+
+    .blueprint.show {
+      opacity:1;
+    }
+
+    /* INSPECTION MODE */
+    .inspect * {
+      outline:1px dashed rgba(0,170,255,.25);
+    }
+
+    .inspect::after {
+      content:"inspection mode";
+      position:fixed;
+      bottom:12px;
+      right:16px;
+      font-size:.75rem;
+      color:var(--muted);
+    }
+
+    /* SIGNATURE */
+    .signature {
+      position:fixed;
+      bottom:18px;
+      left:18px;
+      font-size:.75rem;
+      color:var(--muted);
+      opacity:0;
+      transition:opacity .3s ease;
+    }
+
+    .signature.show {
+      opacity:1;
+    }
+
+    @media (max-width:900px) {
+      header,
+      .about {
+        grid-template-columns:1fr;
+      }
+    }
+
+    /* PRINT MODE */
+    @media print {
+      body::before {
+        content:"Designed to be held.";
+        display:block;
+        font-size:12pt;
+        margin-bottom:20px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
 <header class="container">
@@ -246,18 +262,50 @@ footer {
   </div>
 </section>
 
-<section class="container projects-section">
-  <h2>Projects</h2>
-  <div class="projects"></div>
+<section>
+  <div class="container">
+    <h2>Projects</h2>
+    <div class="projects">
+      <a class="project imperfect" href="project5.html">
+        <img src="IMG_3329.jpg" data-alt="IMG_3329_fail.jpg" class="swap"
+             alt="v4 failed due to shaft wobble under torque">
+        <div data-note="v6 — first version that survived repeated use">
+          <h3>Gilbert Coin Dispenser</h3>
+          <span>2025</span>
+        </div>
+      </a>
 
-  <div class="caution-tape caution-top"></div>
-  <div class="caution-tape caution-bottom"></div>
+      <a class="project" href="project4.html">
+        <img src="IMG_2896.jpeg" alt="alignment issues solved in iteration 3">
+        <div data-note="gear tolerances adjusted ±0.15mm">
+          <h3>Quiztendo Massive Game Toy</h3>
+          <span>2025</span>
+        </div>
+      </a>
 
-  <div class="robot-container">
-    <div class="lower-arm">
-      <div class="upper-arm">
-        <div class="gripper"></div>
-      </div>
+      <a class="project" href="project3.html">
+        <img src="IMG_3175 (1).jpeg" alt="bearing friction caused early errors">
+        <div data-note="measurement error reduced by redesign">
+          <h3>Anemometer</h3>
+          <span>2025</span>
+        </div>
+      </a>
+
+      <a class="project" href="project2.html">
+        <img src="IMG_1606.jpeg" alt="smart recycling bin early prototype">
+        <div data-note="final prototype included sensor feedback">
+          <h3>Smart Recycling Bin</h3>
+          <span>2025</span>
+        </div>
+      </a>
+
+      <a class="project" href="project1.html">
+        <img src="IMG_1607.jpeg" alt="cell project early assembly">
+        <div data-note="tested energy cell stability">
+          <h3>Cell Project</h3>
+          <span>2024</span>
+        </div>
+      </a>
     </div>
   </div>
 </section>
@@ -269,99 +317,118 @@ footer {
   © 2025 Kirill Pegankin
 </footer>
 
+<div class="blueprint"></div>
+<div class="signature">built, not styled</div>
+
 <script>
-const projectsGrid = document.querySelector('.projects');
-const robot = document.querySelector('.robot-container');
-const lowerArm = robot.querySelector('.lower-arm');
-const upperArm = robot.querySelector('.upper-arm');
-const gripper = robot.querySelector('.gripper');
-const tapes = document.querySelectorAll('.caution-tape');
+  // BLUEPRINT GRID
+  let seq = '';
+  document.addEventListener('keydown', e => {
+    seq += e.key.toLowerCase();
+    if (!'cad'.startsWith(seq)) seq = '';
+    if (seq === 'cad') {
+      const bp = document.querySelector('.blueprint');
+      bp.classList.add('show');
+      setTimeout(() => bp.classList.remove('show'), 5000);
+      seq = '';
+    }
+  });
 
-const OFFSCREEN_LEFT = -800;
-const ARM_SPEED = 800;
-const BEND_TO_IMAGE = { lowerAngle: 40, upperAngle: 80 };
-const BEND_TO_GALLERY = { lowerAngle: 0, upperAngle: 0 };
+  // INSPECTION MODE
+  document.addEventListener('keydown', e => {
+    if (e.key.toLowerCase() === 'i') {
+      document.body.classList.toggle('inspect');
+    }
+  });
 
-// robot offscreen left
-robot.style.left = OFFSCREEN_LEFT + 'px';
-
-const projectCardsData = [
-  { href:"project1.html", title:"", year:"", img:"IMG_1607.jpeg" },
-  { href:"project3.html", title:"", year:"", img:"IMG_3175 (1).jpeg" },
-  { href:"project2.html", title:"", year:"", img:"IMG_1606.jpeg" },
-  { href:"project4.html", title:"", year:"", img:"IMG_2896.jpeg" },
-  { href:"project5.html", title:"", year:"", img:"IMG_3329.jpg" },
-];
-
-const offscreenCards = [];
-projectCardsData.forEach(data=>{
-  const card = document.createElement('a');
-  card.className = 'project';
-  card.href = data.href;
-  card.innerHTML = `
-    <img src="${data.img}" alt="${data.title}">
-    <h3>${data.title}</h3>
-    <span>${data.year}</span>
-  `;
-  card.style.position = 'absolute';
-  card.style.width = '280px';
-  card.style.height = '180px';
-  card.style.top = '0';
-  card.style.left = '-350px';
-  offscreenCards.push(card);
-  document.body.appendChild(card);
-});
-
-function rotateArm(lowerAngle, upperAngle, duration = ARM_SPEED, callback) {
-  lowerArm.style.transition = `transform ${duration}ms ease-in-out`;
-  upperArm.style.transition = `transform ${duration}ms ease-in-out`;
-  lowerArm.style.transform = `rotate(${lowerAngle}deg)`;
-  upperArm.style.transform = `rotate(${upperAngle}deg)`;
-  if(callback) setTimeout(callback, duration);
-}
-
-function moveGripper(card, duration = ARM_SPEED, callback){
-  card.style.transition = `all ${duration}ms ease-in-out`;
-  card.style.left = '0px';
-  card.style.top = '0px';
-  if(callback) setTimeout(callback, duration);
-}
-
-function grabNext(){
-  if(offscreenCards.length===0){
-    robot.style.transition='left 1s ease-in-out';
-    robot.style.left=OFFSCREEN_LEFT+'px'; // exit left
-    setTimeout(()=>{ tapes.forEach(t=>t.style.width='0'); },1000);
-    return;
-  }
-
-  const card = offscreenCards.shift();
-
-  rotateArm(BEND_TO_IMAGE.lowerAngle,BEND_TO_IMAGE.upperAngle,ARM_SPEED,()=>{
-    card.style.zIndex='10';
-    gripper.appendChild(card);
-    card.style.left='-20px';
-    card.style.top='-20px';
-
-    rotateArm(BEND_TO_GALLERY.lowerAngle,BEND_TO_GALLERY.upperAngle,ARM_SPEED,()=>{
-      moveGripper(card, ARM_SPEED, ()=>{
-        card.style.position='static';
-        projectsGrid.appendChild(card);
-        setTimeout(grabNext,300);
-      });
+  // TRIPLE CLICK IMAGE SWAP
+  document.querySelectorAll('.swap').forEach(img => {
+    let clicks = 0;
+    img.addEventListener('click', () => {
+      clicks++;
+      if (clicks === 3) {
+        [img.src, img.dataset.alt] = [img.dataset.alt, img.src];
+        clicks = 0;
+      }
+      setTimeout(() => clicks = 0, 600);
     });
   });
-}
 
-// stripes and start
-setTimeout(()=>{
-  tapes.forEach(t=>{ t.style.width='100%'; });
-  setTimeout(()=>{
-    robot.style.transition='left 0.5s ease-in-out';
-    robot.style.left='0px'; // enter left
-    setTimeout(grabNext,500);
-  },3000);
-},2000);
+  // TITLE CHANGE
+  const baseTitle = document.title;
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > document.body.scrollHeight / 3) {
+      document.title = 'Kirill Pegankin — Iterating';
+    } else {
+      document.title = baseTitle;
+    }
+  });
+
+  // SLOW SCROLL REWARD
+  let rewarded = false;
+  window.addEventListener('scroll', () => {
+    if (!rewarded && window.scrollY + window.innerHeight >= document.body.scrollHeight - 5) {
+      document.getElementById('footer').insertAdjacentHTML(
+        'afterbegin',
+        '<div style="font-size:.8rem;margin-bottom:8px;">Still here? You’d like the workshop.</div>'
+      );
+      rewarded = true;
+    }
+  });
+
+  // URL MODE
+  if (new URLSearchParams(location.search).get('mode') === 'shop') {
+    document.body.insertAdjacentHTML(
+      'afterbegin',
+      '<div style="position:fixed;top:10px;left:10px;font-size:.75rem;color:var(--muted);z-index:999;">Workshop context enabled</div>'
+    );
+  }
+
+  // HIDDEN PERSONAL SIGNATURE
+  let sig = '';
+  document.addEventListener('keydown', e => {
+    sig += e.key.toLowerCase();
+    if (!'workshop'.startsWith(sig)) sig = '';
+    if (sig === 'workshop') {
+      const el = document.querySelector('.signature');
+      el.classList.add('show');
+      setTimeout(() => el.classList.remove('show'), 3000);
+      sig = '';
+    }
+  });
+
+  // MIDNIGHT FOOTER
+  const now = new Date();
+  if (now.getHours() === 0 && now.getMinutes() < 5) {
+    document.getElementById('footer-line').textContent = 'The workshop is quiet.';
+  }
+
+  // SILENCE DOT (10s no interaction)
+  let idleTimer;
+  const dot = document.createElement('div');
+  dot.style.position = 'fixed';
+  dot.style.bottom = '12px';
+  dot.style.right = '12px';
+  dot.style.width = '8px';
+  dot.style.height = '8px';
+  dot.style.borderRadius = '50%';
+  dot.style.backgroundColor = 'var(--accent)';
+  dot.style.opacity = '0';
+  dot.style.transition = 'opacity .3s ease';
+  document.body.appendChild(dot);
+
+  function resetIdle() {
+    dot.style.opacity = '0';
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => {
+      dot.style.opacity = '1';
+    }, 10000);
+  }
+
+  ['mousemove', 'keydown', 'scroll', 'touchstart']
+    .forEach(ev => document.addEventListener(ev, resetIdle));
+
+  resetIdle();
 </script>
 
 </body>
