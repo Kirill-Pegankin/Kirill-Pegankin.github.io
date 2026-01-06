@@ -103,35 +103,35 @@ section h2 {
   min-height: 160px;
 }
 
-.project {
-  width: 200px;
-  text-align: center;
-  cursor: pointer;
+/* STACKED IMAGES */
+.projects-stack {
+  position: absolute;
+  right: 50px; /* stack on right */
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none;
-  color: #fff;
+  flex-direction: column-reverse; /* topmost image last */
+  gap: 10px;
+  z-index: 10;
 }
 
-.project img {
+.projects-stack img {
   width: 180px;
   height: 120px;
   object-fit: cover;
   border-radius: 8px;
-  margin-bottom: 8px;
+  cursor: pointer;
 }
 
 /* ROBOT */
 .robot-container {
   position: absolute;
-  top: 170%; /* move it down near the project section */
-  transform: translateY(-50%) rotate(180deg); /* flip it 180 degrees */
+  top: 170%; /* aligned with projects */
+  transform: translateY(-50%) rotate(180deg); /* flipped */
   width: 750px;
   height: 80px;
   filter: drop-shadow(0 5px 5px rgba(0,0,0,0.6));
 }
-
 
 .lower-arm {
   width: 450px;
@@ -190,7 +190,7 @@ section h2 {
 <header class="container">
   <div>
     <h1>Kirill Pegankin</h1>
-    <p>I design and build physical systems. CAD to real parts. Tested, iterated, rebuilt.</p>
+    <p>I design and build physical systems—CAD to real parts. Tested, iterated, rebuilt.</p>
   </div>
   <img src="IMG_3000.png" alt="final portrait after multiple lighting tests">
 </header>
@@ -219,6 +219,7 @@ section h2 {
   <div class="caution-tape caution-bottom"></div>
   <h2>Projects</h2>
   <div class="projects"></div>
+  <div class="projects-stack"></div> <!-- stack of images -->
 </section>
 
 <div class="robot-container">
@@ -241,6 +242,7 @@ const upperArm = robot.querySelector('.upper-arm');
 const gripper = robot.querySelector('.gripper');
 const projectsSection = document.querySelector('.projects-section');
 const projectsGrid = projectsSection.querySelector('.projects');
+const stackContainer = projectsSection.querySelector('.projects-stack');
 const tapes = projectsSection.querySelectorAll('.caution-tape');
 
 const OFFSCREEN_RIGHT = -800;
@@ -258,6 +260,15 @@ const projectData = [
 
 robot.style.right = OFFSCREEN_RIGHT + 'px';
 
+// create stacked images
+const projectCards = projectData.map(data => {
+  const card = document.createElement('img');
+  card.src = data.img;
+  card.alt = data.title;
+  stackContainer.appendChild(card);
+  return card;
+});
+
 function rotateArm(lowerAngle, upperAngle, duration = ARM_SPEED, callback){
   lowerArm.style.transition = `transform ${duration}ms ease-in-out`;
   upperArm.style.transition = `transform ${duration}ms ease-in-out`;
@@ -266,40 +277,44 @@ function rotateArm(lowerAngle, upperAngle, duration = ARM_SPEED, callback){
   if(callback) setTimeout(callback, duration);
 }
 
-let current = 0;
+let currentIndex = projectCards.length - 1; // topmost image
+
 function grabNext(){
-  if(current >= projectData.length){
+  if(currentIndex < 0){
     robot.style.transition='right 1s ease-in-out';
     robot.style.right=OFFSCREEN_RIGHT+'px';
     setTimeout(()=>tapes.forEach(t=>t.style.animation='rollOut 3s ease forwards'),1000);
     return;
   }
 
-  const data = projectData[current];
-
-  const card = document.createElement('a');
-  card.className='project';
-  card.href=data.link;
-  card.innerHTML=`<img src="${data.img}" alt="${data.title}"><h3>${data.title}</h3><span>${data.year}</span>`;
-  card.style.position='absolute';
-  card.style.right='-400px';
-  card.style.top='0px';
-  projectsGrid.appendChild(card);
+  const card = projectCards[currentIndex];
 
   rotateArm(BEND_TO_PROJECT.lowerAngle,BEND_TO_PROJECT.upperAngle,ARM_SPEED,()=>{
-    // simulate grab
-    card.style.right='-20px';
-    card.style.top='-20px';
-    rotateArm(BEND_TO_GRID.lowerAngle,BEND_TO_GRID.upperAngle,ARM_SPEED,()=>{
+    // grab image
+    const rect = card.getBoundingClientRect();
+    card.style.position='fixed';
+    card.style.left = rect.left + 'px';
+    card.style.top = rect.top + 'px';
+    card.style.zIndex = 100;
+
+    // move to gallery
+    card.style.transition = `all ${ARM_SPEED}ms ease-in-out`;
+    const galleryRect = projectsGrid.getBoundingClientRect();
+    card.style.left = galleryRect.left + 10 + 'px';
+    card.style.top = galleryRect.top + 10 + 'px';
+
+    setTimeout(()=>{
+      // place in grid
       card.style.position='static';
+      card.style.transition='';
       projectsGrid.appendChild(card);
-      current++;
-      setTimeout(grabNext,300);
-    });
+      currentIndex--;
+      grabNext();
+    }, ARM_SPEED);
   });
 }
 
-// Sequence: 2s delay -> 3s stripes roll -> robot slides in
+// Sequence: delay -> stripes roll in -> robot slides in -> grab stack
 setTimeout(()=>{
   tapes.forEach(t=>t.style.animation='rollIn 3s ease forwards');
   setTimeout(()=>{
