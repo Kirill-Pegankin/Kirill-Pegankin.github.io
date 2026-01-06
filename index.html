@@ -120,6 +120,7 @@ section h2 {
 .project {
   border:1px solid var(--line);
   position:relative;
+  opacity:0; /* hide initially */
 }
 
 .project img {
@@ -322,7 +323,8 @@ const lowerArm = robot.querySelector('.lower-arm');
 const upperArm = robot.querySelector('.upper-arm');
 const gripper = robot.querySelector('.gripper');
 const projectsSection = document.querySelector('.projects-wrapper');
-const projects = Array.from(projectsSection.querySelectorAll('.project'));
+const projectsContainer = projectsSection.querySelector('.projects');
+const projectCards = Array.from(projectsContainer.querySelectorAll('.project'));
 const tapes = projectsSection.querySelectorAll('.caution-tape');
 
 const OFFSCREEN_RIGHT = -800;
@@ -330,18 +332,11 @@ const ARM_SPEED = 800;
 const BEND_TO_IMAGE = { lowerAngle: 40, upperAngle: 80 };
 const BEND_TO_GALLERY = { lowerAngle: 0, upperAngle: 0 };
 
-// Start arm fully offscreen
-robot.style.right = OFFSCREEN_RIGHT + 'px';
+// Hide cards initially
+projectCards.forEach(p => p.style.display = 'none');
 
-// Layout project stack
-function layoutStack() {
-  projects.forEach((proj, i) => {
-    proj.style.top = `${i*150}px`;
-    proj.style.left = '0px';
-    proj.style.zIndex = i;
-  });
-}
-layoutStack();
+// Start robot offscreen
+robot.style.right = OFFSCREEN_RIGHT + 'px';
 
 // Arm rotation
 function rotateArm(lowerAngle, upperAngle, duration = ARM_SPEED, callback) {
@@ -352,43 +347,44 @@ function rotateArm(lowerAngle, upperAngle, duration = ARM_SPEED, callback) {
   if(callback) setTimeout(callback, duration);
 }
 
-// Move gripper with project card
-function moveGripper(proj, duration = ARM_SPEED, callback) {
-  proj.style.transition = `all ${duration}ms ease-in-out`;
-  proj.style.left = '-20px';
-  proj.style.top = '-20px';
-  proj.style.transform = 'scale(1.05) rotate(0deg)';
+// Move gripper with card
+function moveGripper(card, duration = ARM_SPEED, callback) {
+  card.style.transition = `all ${duration}ms ease-in-out`;
+  card.style.left = '-20px';
+  card.style.top = '-20px';
+  card.style.transform = 'scale(1.05) rotate(0deg)';
   if(callback) setTimeout(callback, duration);
 }
 
-// Grab next project
+// Grab next card
 function grabNext() {
-  if(projects.length===0){
+  if(projectCards.length===0){
     robot.style.transition='right 1s ease-in-out';
     robot.style.right=OFFSCREEN_RIGHT+'px';
     setTimeout(()=>{ tapes.forEach(t=>{ t.style.animation='rollOut 3s ease forwards'; }); },1000);
     return;
   }
 
-  const proj = projects.shift();
-
+  const card = projectCards.shift();
+  card.style.display='block'; // show when grabbed
+  card.style.position='absolute';
+  card.style.left='100%'; // start outside the screen
+  card.style.top='50px';
+  card.style.width='260px';
+  card.style.height='200px';
+  card.style.zIndex='100';
+  
   rotateArm(BEND_TO_IMAGE.lowerAngle, BEND_TO_IMAGE.upperAngle, ARM_SPEED, ()=>{
-    proj.style.position='absolute';
-    proj.style.zIndex='100';
-    gripper.appendChild(proj);
-    proj.style.left='-20px';
-    proj.style.top='-20px';
-    proj.style.width='260px';
-    proj.style.height='200px';
-
-    layoutStack(); // remaining projects fall
+    gripper.appendChild(card);
+    card.style.left='-20px';
+    card.style.top='-20px';
 
     rotateArm(BEND_TO_GALLERY.lowerAngle, BEND_TO_GALLERY.upperAngle, ARM_SPEED, ()=>{
-      moveGripper(proj, ARM_SPEED, ()=>{
-        proj.style.position='static';
-        proj.style.width='100%';
-        proj.style.height='auto';
-        projectsSection.querySelector('.projects').appendChild(proj);
+      moveGripper(card, ARM_SPEED, ()=>{
+        card.style.position='static';
+        card.style.width='100%';
+        card.style.height='auto';
+        projectsContainer.appendChild(card);
         setTimeout(grabNext, 300);
       });
     });
@@ -404,6 +400,7 @@ setTimeout(()=>{
     setTimeout(grabNext,500);
   },3000);
 },2000);
+
 </script>
 
 </body>
