@@ -275,12 +275,13 @@ const upperArm = robot.querySelector('.upper-arm');
 const gripper = robot.querySelector('.gripper');
 const tapes = document.querySelectorAll('.caution-tape');
 
-const OFFSCREEN_RIGHT = -800;
+const OFFSCREEN_LEFT = -800; // robot starts off left
 const ARM_SPEED = 800;
 const BEND_TO_IMAGE = { lowerAngle: 40, upperAngle: 80 };
 const BEND_TO_GALLERY = { lowerAngle: 0, upperAngle: 0 };
 
-robot.style.right = OFFSCREEN_RIGHT + 'px';
+// move robot offscreen to the left
+robot.style.left = OFFSCREEN_LEFT + 'px';
 
 const projectCardsData = [
   { href:"project1.html", title:"Cell Project", year:"2024", img:"IMG_1607.jpeg" },
@@ -304,7 +305,7 @@ projectCardsData.forEach(data=>{
   card.style.width = '280px';
   card.style.height = '180px';
   card.style.top = '0';
-  card.style.right = '-350px';
+  card.style.left = '-350px'; // offscreen left
   offscreenCards.push(card);
   document.body.appendChild(card);
 });
@@ -319,16 +320,15 @@ function rotateArm(lowerAngle, upperAngle, duration = ARM_SPEED, callback) {
 
 function moveGripper(card, duration = ARM_SPEED, callback){
   card.style.transition = `all ${duration}ms ease-in-out`;
-  card.style.right = '0px';
+  card.style.left = '0px'; // move to gallery
   card.style.top = '0px';
-  card.style.transform = 'rotate(0deg)'; // only rotate cards
   if(callback) setTimeout(callback, duration);
 }
 
 function grabNext(){
   if(offscreenCards.length===0){
-    robot.style.transition='right 1s ease-in-out';
-    robot.style.right=OFFSCREEN_RIGHT+'px';
+    robot.style.transition='left 1s ease-in-out';
+    robot.style.left=OFFSCREEN_LEFT+'px'; // exit left
     setTimeout(()=>{ tapes.forEach(t=>t.style.width='0'); },1000);
     return;
   }
@@ -340,7 +340,6 @@ function grabNext(){
     gripper.appendChild(card);
     card.style.left='-20px';
     card.style.top='-20px';
-    card.style.transform='rotate(0deg)'; // FIX: upright while grabbed
 
     rotateArm(BEND_TO_GALLERY.lowerAngle,BEND_TO_GALLERY.upperAngle,ARM_SPEED,()=>{
       moveGripper(card, ARM_SPEED, ()=>{
@@ -352,15 +351,16 @@ function grabNext(){
   });
 }
 
+// animate stripes and start robot from left
 setTimeout(()=>{
   tapes.forEach(t=>{ t.style.width='100%'; });
   setTimeout(()=>{
-    robot.style.transition='right 0.5s ease-in-out';
-    robot.style.right='0px';
+    robot.style.transition='left 0.5s ease-in-out';
+    robot.style.left='0px'; // enter gallery
     setTimeout(grabNext,500);
   },3000);
 },2000);
 </script>
-
+  
 </body>
 </html>
