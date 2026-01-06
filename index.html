@@ -85,6 +85,9 @@ header img { width:100%; border-radius:12px; border:1px solid var(--line); }
   width: 0;
   overflow: hidden;
 }
+.caution-top { top:0; left:0; }
+.caution-bottom { bottom:0; left:0; }
+
 @keyframes rollIn { from { width:0 } to { width:100% } }
 @keyframes rollOut { from { width:100% } to { width:0 } }
 
@@ -154,7 +157,6 @@ header img { width:100%; border-radius:12px; border:1px solid var(--line); }
 </div>
 
 <script>
-// --- ROBOT LOGIC ---
 const robot = document.querySelector('.robot-container');
 const lowerArm = robot.querySelector('.lower-arm');
 const upperArm = robot.querySelector('.upper-arm');
@@ -195,7 +197,7 @@ function moveGripper(card,duration=ARM_SPEED,cb){
   card.style.transition=`all ${duration}ms ease-in-out`;
   card.style.left='-20px';
   card.style.top='-20px';
-  card.style.transform='scale(1.1) rotate(180deg)';
+  card.style.transform='scale(1.1)'; // removed rotate(180deg)
   if(cb) setTimeout(cb,duration);
 }
 
@@ -216,11 +218,9 @@ function grabNext(){
   card.style.position='absolute'; card.style.width='280px'; card.style.top='0px'; card.style.left='0px';
 
   rotateArm(BEND_TO_CARD.lowerAngle,BEND_TO_CARD.upperAngle,ARM_SPEED,()=>{
-    // attach to gripper
     gripper.appendChild(card);
     rotateArm(BEND_TO_GALLERY.lowerAngle,BEND_TO_GALLERY.upperAngle,ARM_SPEED,()=>{
       moveGripper(card,ARM_SPEED,()=>{
-        // drop into grid
         card.style.position='static'; card.style.transform=''; card.style.width='100%';
         projectsGrid.appendChild(card);
         setTimeout(grabNext,300);
@@ -238,7 +238,7 @@ setTimeout(()=>{
     setTimeout(grabNext,500);
   },3000);
 },2000);
-</script>
 
+</script>
 </body>
 </html>
