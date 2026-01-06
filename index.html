@@ -2,35 +2,94 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<title>Kirill Pegankin</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kirill Pegankin Portfolio</title>
 <style>
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  overflow-x: hidden;
-  background: #111;
-  font-family: sans-serif;
+:root {
+  --bg:#0a0a0a;
+  --fg:#f2f2f2;
+  --muted:#9a9a9a;
+  --line:#2a2a2a;
+  --accent:#00aaff;
 }
 
-/* PROJECTS SECTION STRIPES */
-.caution-tape {
-  position: absolute;
-  height: 40px;
-  background: repeating-linear-gradient(45deg, yellow 0 20px, black 20px 40px);
-  z-index: 100;
-  width: 0;
-  overflow: hidden;
+* { box-sizing:border-box; margin:0; padding:0; }
+
+body {
+  font-family: Inter, system-ui, sans-serif;
+  background:var(--bg);
+  color:var(--fg);
 }
 
-.caution-top { top: 0; }
-.caution-bottom { bottom: 0; }
+a { color:inherit; text-decoration:none; }
 
-@keyframes rollIn { from { width: 0; } to { width: 100%; } }
-@keyframes rollOut { from { width: 100%; } to { width: 0; } }
+.container {
+  max-width:1100px;
+  margin:auto;
+  padding:80px 20px;
+}
 
-/* PROJECTS GRID */
+/* HEADER */
+header {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+  align-items:center;
+  min-height:90vh;
+}
+
+header h1 {
+  font-size:clamp(2.5rem,5vw,4rem);
+  line-height:1.1;
+}
+
+header p {
+  margin-top:24px;
+  color:var(--muted);
+  max-width:480px;
+}
+
+header img {
+  width:100%;
+  border-radius:12px;
+  border:1px solid var(--line);
+}
+
+/* SECTIONS */
+section { border-top:1px solid var(--line); }
+
+section h2 {
+  font-size:1.8rem;
+  margin-bottom:40px;
+}
+
+/* ABOUT */
+.about {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+}
+
+.about p {
+  color:var(--muted);
+  font-size:1.05rem;
+  position:relative;
+}
+
+/* SKILLS */
+.skills {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
+
+.skill {
+  border:1px solid var(--line);
+  padding:20px;
+  font-weight:600;
+}
+
+/* PROJECTS */
 .projects-section {
   position: relative;
   margin: 100px auto;
@@ -41,7 +100,7 @@ html, body {
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
-  min-height: 160px; /* reserve space for cards */
+  min-height: 160px;
 }
 
 .project {
@@ -104,14 +163,57 @@ html, body {
   top: -10px;
   left: 300px;
 }
+
+/* CAUTION STRIPES */
+.caution-tape {
+  position: absolute;
+  height: 40px;
+  background: repeating-linear-gradient(45deg, yellow 0 20px, black 20px 40px);
+  z-index: 100;
+  width: 0;
+  overflow: hidden;
+}
+
+.caution-top { top: 0; }
+.caution-bottom { bottom: 0; }
+
+@keyframes rollIn { from { width: 0; } to { width: 100%; } }
+@keyframes rollOut { from { width: 100%; } to { width: 0; } }
+
 </style>
 </head>
 <body>
 
+<header class="container">
+  <div>
+    <h1>Kirill Pegankin</h1>
+    <p>I design and build physical systems. CAD to real parts. Tested, iterated, rebuilt.</p>
+  </div>
+  <img src="IMG_3000.png" alt="final portrait after multiple lighting tests">
+</header>
+
+<section>
+  <div class="container about">
+    <h2>About</h2>
+    <p>My work focuses on functional engineering projects—mechanisms, enclosures, and devices designed for real use.</p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>Skills</h2>
+    <div class="skills">
+      <div class="skill">Fusion 360 / FreeCAD</div>
+      <div class="skill">3D Printing & Tolerances</div>
+      <div class="skill">Mechanical Prototyping</div>
+      <div class="skill">Iteration & Testing</div>
+    </div>
+  </div>
+</section>
+
 <section class="projects-section">
   <div class="caution-tape caution-top"></div>
   <div class="caution-tape caution-bottom"></div>
-
   <h2>Projects</h2>
   <div class="projects"></div>
 </section>
@@ -123,6 +225,11 @@ html, body {
     </div>
   </div>
 </div>
+
+<footer id="footer">
+  <div id="footer-line" style="font-size:.85rem; margin-bottom:10px;">Most projects fail before they work.</div>
+  © 2025 Kirill Pegankin
+</footer>
 
 <script>
 const robot = document.querySelector('.robot-container');
@@ -147,11 +254,10 @@ const projectData = [
   { title: "Cell Project", year: 2024, link: "project1.html", img:"IMG_1607.jpeg" }
 ];
 
-// Prepare robot off-screen
+// Start robot off-screen
 robot.style.right = OFFSCREEN_RIGHT + 'px';
 
-// Rotate arms
-function rotateArm(lowerAngle, upperAngle, duration = ARM_SPEED, callback) {
+function rotateArm(lowerAngle, upperAngle, duration = ARM_SPEED, callback){
   lowerArm.style.transition = `transform ${duration}ms ease-in-out`;
   upperArm.style.transition = `transform ${duration}ms ease-in-out`;
   lowerArm.style.transform = `rotate(${lowerAngle}deg)`;
@@ -159,35 +265,31 @@ function rotateArm(lowerAngle, upperAngle, duration = ARM_SPEED, callback) {
   if(callback) setTimeout(callback, duration);
 }
 
-// Move gripper
-function moveGripper(card, duration = ARM_SPEED, callback) {
+function moveGripper(card, duration = ARM_SPEED, callback){
   card.style.transition = `all ${duration}ms ease-in-out`;
-  card.style.left = '-20px';
-  card.style.top = '-20px';
-  card.style.transform = 'rotate(0deg)'; // upright in hand
+  card.style.left='-20px';
+  card.style.top='-20px';
+  card.style.transform='rotate(0deg)';
   if(callback) setTimeout(callback, duration);
 }
 
-// Grab next project
 let current = 0;
 function grabNext(){
   if(current >= projectData.length){
-    // retract robot
-    robot.style.transition = 'right 1s ease-in-out';
-    robot.style.right = OFFSCREEN_RIGHT + 'px';
+    robot.style.transition='right 1s ease-in-out';
+    robot.style.right=OFFSCREEN_RIGHT+'px';
     setTimeout(()=>tapes.forEach(t=>t.style.animation='rollOut 3s ease forwards'),1000);
     return;
   }
 
   const data = projectData[current];
 
-  // Create card element
   const card = document.createElement('a');
-  card.className = 'project';
-  card.href = data.link;
-  card.innerHTML = `<img src="${data.img}" alt="${data.title}"><h3>${data.title}</h3><span>${data.year}</span>`;
+  card.className='project';
+  card.href=data.link;
+  card.innerHTML=`<img src="${data.img}" alt="${data.title}"><h3>${data.title}</h3><span>${data.year}</span>`;
   card.style.position='absolute';
-  card.style.left='-400px'; // behind robot
+  card.style.left='-400px';
   card.style.top='0px';
   projectsGrid.appendChild(card);
 
@@ -197,10 +299,10 @@ function grabNext(){
     card.style.top='-20px';
     card.style.width='180px';
     card.style.height='120px';
-    card.style.transform='rotate(0deg)'; // upright
+    card.style.transform='rotate(0deg)';
 
     rotateArm(BEND_TO_GRID.lowerAngle,BEND_TO_GRID.upperAngle,ARM_SPEED,()=>{
-      moveGripper(card, ARM_SPEED, ()=>{
+      moveGripper(card,ARM_SPEED,()=>{
         card.style.position='static';
         projectsGrid.appendChild(card);
         current++;
@@ -210,7 +312,7 @@ function grabNext(){
   });
 }
 
-// Start sequence: 2s delay -> 3s stripes roll -> robot slides
+// Sequence: 2s delay -> 3s stripes roll -> robot slides in
 setTimeout(()=>{
   tapes.forEach(t=>t.style.animation='rollIn 3s ease forwards');
   setTimeout(()=>{
@@ -219,7 +321,6 @@ setTimeout(()=>{
     setTimeout(grabNext,500);
   },3000);
 },2000);
-
 </script>
 </body>
 </html>
