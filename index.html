@@ -126,12 +126,11 @@ section h2 {
 .robot-container {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%); /* removed rotate(180deg) */
+  transform: translateY(-50%); /* <-- FIXED: removed rotate(180deg) */
   width: 750px;
   height: 80px;
   filter: drop-shadow(0 5px 5px rgba(0,0,0,0.6));
 }
-
 
 .lower-arm {
   width: 450px;
@@ -248,7 +247,6 @@ const ARM_SPEED = 800;
 const BEND_TO_PROJECT = { lowerAngle: 40, upperAngle: 80 };
 const BEND_TO_GRID = { lowerAngle: 0, upperAngle: 0 };
 
-// Project data
 const projectData = [
   { title: "Gilbert Coin Dispenser", year: 2025, link: "project5.html", img:"IMG_3329.jpg" },
   { title: "Quiztendo Massive Game Toy", year: 2025, link: "project4.html", img:"IMG_2896.jpeg" },
@@ -257,7 +255,6 @@ const projectData = [
   { title: "Cell Project", year: 2024, link: "project1.html", img:"IMG_1607.jpeg" }
 ];
 
-// Start robot off-screen
 robot.style.right = OFFSCREEN_RIGHT + 'px';
 
 function rotateArm(lowerAngle, upperAngle, duration = ARM_SPEED, callback){
@@ -283,29 +280,21 @@ function grabNext(){
   card.className='project';
   card.href=data.link;
   card.innerHTML=`<img src="${data.img}" alt="${data.title}"><h3>${data.title}</h3><span>${data.year}</span>`;
-  card.style.position='fixed';
-  card.style.left='100%';
-  card.style.top='50%';
+  card.style.position='absolute';
+  card.style.left='-400px';
+  card.style.top='0px';
   projectsGrid.appendChild(card);
 
   rotateArm(BEND_TO_PROJECT.lowerAngle,BEND_TO_PROJECT.upperAngle,ARM_SPEED,()=>{
-    // move card to gripper
-    const gripRect = gripper.getBoundingClientRect();
-    card.style.transition = `all ${ARM_SPEED}ms ease-in-out`;
-    card.style.left = gripRect.left + 'px';
-    card.style.top = gripRect.top + 'px';
-
-    setTimeout(()=>{
-      rotateArm(BEND_TO_GRID.lowerAngle,BEND_TO_GRID.upperAngle,ARM_SPEED,()=>{
-        const gridRect = projectsGrid.getBoundingClientRect();
-        card.style.left = gridRect.left + (current*220) + 'px';
-        card.style.top = gridRect.top + 'px';
-        card.style.position = 'static';
-        projectsGrid.appendChild(card);
-        current++;
-        setTimeout(grabNext,300);
-      });
-    }, ARM_SPEED);
+    // simulate grab
+    card.style.left='-20px';
+    card.style.top='-20px';
+    rotateArm(BEND_TO_GRID.lowerAngle,BEND_TO_GRID.upperAngle,ARM_SPEED,()=>{
+      card.style.position='static';
+      projectsGrid.appendChild(card);
+      current++;
+      setTimeout(grabNext,300);
+    });
   });
 }
 
