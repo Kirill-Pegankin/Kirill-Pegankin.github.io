@@ -2,151 +2,75 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Kirill Pegankin</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<title>Kirill Pegankin Portfolio</title>
 <style>
-:root {
-  --bg:#0a0a0a;
-  --fg:#f2f2f2;
-  --muted:#9a9a9a;
-  --line:#2a2a2a;
-  --accent:#00aaff;
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  background: #111;
+  font-family: sans-serif;
 }
 
-* { box-sizing:border-box; margin:0; padding:0; }
-
-body {
-  font-family: Inter, system-ui, sans-serif;
-  background:var(--bg);
-  color:var(--fg);
+/* PROJECTS SECTION STRIPES */
+.caution-tape {
+  position: absolute;
+  height: 40px;
+  background: repeating-linear-gradient(45deg, yellow 0 20px, black 20px 40px);
+  z-index: 100;
+  width: 0;
+  overflow: hidden;
 }
 
-a { color:inherit; text-decoration:none; }
+.caution-top { top: 0; }
+.caution-bottom { bottom: 0; }
 
-.container {
-  max-width:1100px;
-  margin:auto;
-  padding:80px 20px;
-}
+@keyframes rollIn { from { width: 0; } to { width: 100%; } }
+@keyframes rollOut { from { width: 100%; } to { width: 0; } }
 
-/* HEADER */
-header {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:40px;
-  align-items:center;
-  min-height:90vh;
-}
-
-header h1 {
-  font-size:clamp(2.5rem,5vw,4rem);
-  line-height:1.1;
-}
-
-header p {
-  margin-top:24px;
-  color:var(--muted);
-  max-width:480px;
-}
-
-header img {
-  width:100%;
-  border-radius:12px;
-  border:1px solid var(--line);
-}
-
-/* SECTIONS */
-section { border-top:1px solid var(--line); }
-
-section h2 {
-  font-size:1.8rem;
-  margin-bottom:40px;
-}
-
-/* ABOUT */
-.about {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:40px;
-}
-
-.about p {
-  color:var(--muted);
-  font-size:1.05rem;
-}
-
-/* SKILLS */
-.skills {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:20px;
-}
-
-.skill {
-  border:1px solid var(--line);
-  padding:20px;
-  font-weight:600;
-}
-
-/* PROJECTS */
+/* PROJECTS GRID */
 .projects-section {
   position: relative;
-  overflow: hidden;
-  min-height: 250px;
+  margin: 100px auto;
+  max-width: 1100px;
 }
+
 .projects {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:30px;
-  position: relative;
-  min-height: 200px;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  min-height: 160px; /* reserve space for cards */
 }
 
 .project {
-  position: absolute; 
-  width: 280px;
-  height: 180px;
-  border:1px solid var(--line);
-  border-radius:8px;
-  overflow:hidden;
+  width: 200px;
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: #fff;
 }
 
 .project img {
-  width:100%;
-  height:100%;
-  object-fit:cover;
+  width: 180px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 8px;
 }
 
-.project h3 {
-  position:absolute;
-  bottom:28px;
-  left:12px;
-  margin:0;
-  font-size:1.1rem;
-  color:#fff;
-  text-shadow:0 0 5px rgba(0,0,0,0.7);
-}
-
-.project span {
-  position:absolute;
-  bottom:8px;
-  left:12px;
-  font-size:.9rem;
-  color:#fff;
-  text-shadow:0 0 5px rgba(0,0,0,0.7);
-}
-
-/* ROBOT ARM */
+/* ROBOT */
 .robot-container {
   position: absolute;
   top: 50%;
-  right: 0;
   transform: translateY(-50%) rotate(180deg);
   width: 750px;
   height: 80px;
   filter: drop-shadow(0 5px 5px rgba(0,0,0,0.6));
-  z-index: 500;
 }
 
 .lower-arm {
@@ -180,119 +104,53 @@ section h2 {
   top: -10px;
   left: 300px;
 }
-
-/* CAUTION STRIPES */
-.caution-tape {
-  position: absolute;
-  height: 40px;
-  background: repeating-linear-gradient(
-    45deg,
-    yellow 0 20px,
-    black 20px 40px
-  );
-  z-index: 100;
-  width: 0;
-  overflow: hidden;
-  transition: width 3s ease;
-}
 </style>
 </head>
 <body>
 
-<header class="container">
-  <div>
-    <h1>Kirill Pegankin</h1>
-    <p>I design and build physical systems. CAD to real parts. Tested, iterated, rebuilt.</p>
-  </div>
-  <img src="IMG_3000.png" alt="final portrait after multiple lighting tests">
-</header>
-
-<section>
-  <div class="container about">
-    <h2>About</h2>
-    <p>My work focuses on functional engineering projects—mechanisms, enclosures, and devices designed for real use.</p>
-  </div>
-</section>
-
-<section>
-  <div class="container">
-    <h2>Skills</h2>
-    <div class="skills">
-      <div class="skill">Fusion 360 / FreeCAD</div>
-      <div class="skill">3D Printing & Tolerances</div>
-      <div class="skill">Mechanical Prototyping</div>
-      <div class="skill">Iteration & Testing</div>
-    </div>
-  </div>
-</section>
-
-<section class="container projects-section">
-  <h2>Projects</h2>
-  <div class="projects"></div>
-
+<section class="projects-section">
   <div class="caution-tape caution-top"></div>
   <div class="caution-tape caution-bottom"></div>
 
-  <div class="robot-container">
-    <div class="lower-arm">
-      <div class="upper-arm">
-        <div class="gripper"></div>
-      </div>
-    </div>
-  </div>
+  <h2>Projects</h2>
+  <div class="projects"></div>
 </section>
 
-<footer id="footer">
-  <div id="footer-line" style="font-size:.85rem; margin-bottom:10px;">Most projects fail before they work.</div>
-  © 2025 Kirill Pegankin
-</footer>
+<div class="robot-container">
+  <div class="lower-arm">
+    <div class="upper-arm">
+      <div class="gripper"></div>
+    </div>
+  </div>
+</div>
 
 <script>
-// PROJECT DATA
-const projectsGrid = document.querySelector('.projects');
 const robot = document.querySelector('.robot-container');
 const lowerArm = robot.querySelector('.lower-arm');
 const upperArm = robot.querySelector('.upper-arm');
 const gripper = robot.querySelector('.gripper');
-const tapes = document.querySelectorAll('.caution-tape');
+const projectsSection = document.querySelector('.projects-section');
+const projectsGrid = projectsSection.querySelector('.projects');
+const tapes = projectsSection.querySelectorAll('.caution-tape');
 
 const OFFSCREEN_RIGHT = -800;
 const ARM_SPEED = 800;
-const BEND_TO_IMAGE = { lowerAngle: 40, upperAngle: 80 };
-const BEND_TO_GALLERY = { lowerAngle: 0, upperAngle: 0 };
+const BEND_TO_PROJECT = { lowerAngle: 40, upperAngle: 80 };
+const BEND_TO_GRID = { lowerAngle: 0, upperAngle: 0 };
 
-// ROBOT START OFFSCREEN
-robot.style.right = OFFSCREEN_RIGHT + 'px';
-
-const projectCardsData = [
-  { href:"project1.html", title:"Cell Project", year:"2024", img:"IMG_1607.jpeg" },
-  { href:"project3.html", title:"Anemometer", year:"2025", img:"IMG_3175 (1).jpeg" },
-  { href:"project2.html", title:"Smart Recycling Bin", year:"2025", img:"IMG_1606.jpeg" },
-  { href:"project4.html", title:"Quiztendo Massive Game Toy", year:"2025", img:"IMG_2896.jpeg" },
-  { href:"project5.html", title:"Gilbert Coin Dispenser", year:"2025", img:"IMG_3329.jpg" },
+// Project data
+const projectData = [
+  { title: "Gilbert Coin Dispenser", year: 2025, link: "project5.html", img:"IMG_3329.jpg" },
+  { title: "Quiztendo Massive Game Toy", year: 2025, link: "project4.html", img:"IMG_2896.jpeg" },
+  { title: "Anemometer", year: 2025, link: "project3.html", img:"IMG_3175 (1).jpeg" },
+  { title: "Smart Recycling Bin", year: 2025, link: "project2.html", img:"IMG_1606.jpeg" },
+  { title: "Cell Project", year: 2024, link: "project1.html", img:"IMG_1607.jpeg" }
 ];
 
-// CREATE OFFSCREEN CARDS
-const offscreenCards = [];
-projectCardsData.forEach(data=>{
-  const card = document.createElement('a');
-  card.className = 'project';
-  card.href = data.href;
-  card.innerHTML = `
-    <img src="${data.img}" alt="${data.title}">
-    <h3>${data.title}</h3>
-    <span>${data.year}</span>
-  `;
-  card.style.position = 'absolute';
-  card.style.width = '280px';
-  card.style.height = '180px';
-  card.style.top = '0';
-  card.style.right = '-350px'; // start offscreen
-  offscreenCards.push(card);
-  document.body.appendChild(card);
-});
+// Prepare robot off-screen
+robot.style.right = OFFSCREEN_RIGHT + 'px';
 
-// ROTATE ARM
+// Rotate arms
 function rotateArm(lowerAngle, upperAngle, duration = ARM_SPEED, callback) {
   lowerArm.style.transition = `transform ${duration}ms ease-in-out`;
   upperArm.style.transition = `transform ${duration}ms ease-in-out`;
@@ -301,53 +159,67 @@ function rotateArm(lowerAngle, upperAngle, duration = ARM_SPEED, callback) {
   if(callback) setTimeout(callback, duration);
 }
 
-// MOVE GRIPPER
-function moveGripper(card, duration = ARM_SPEED, callback){
+// Move gripper
+function moveGripper(card, duration = ARM_SPEED, callback) {
   card.style.transition = `all ${duration}ms ease-in-out`;
-  card.style.right = '0px';
-  card.style.top = '0px';
-  card.style.transform = 'rotate(0deg)'; // always upright
+  card.style.left = '-20px';
+  card.style.top = '-20px';
+  card.style.transform = 'rotate(0deg)'; // upright in hand
   if(callback) setTimeout(callback, duration);
 }
 
-// GRAB NEXT CARD
+// Grab next project
+let current = 0;
 function grabNext(){
-  if(offscreenCards.length===0){
-    robot.style.transition='right 1s ease-in-out';
-    robot.style.right=OFFSCREEN_RIGHT+'px';
-    setTimeout(()=>{ tapes.forEach(t=>t.style.width='0'); },1000);
+  if(current >= projectData.length){
+    // retract robot
+    robot.style.transition = 'right 1s ease-in-out';
+    robot.style.right = OFFSCREEN_RIGHT + 'px';
+    setTimeout(()=>tapes.forEach(t=>t.style.animation='rollOut 3s ease forwards'),1000);
     return;
   }
 
-  const card = offscreenCards.shift();
+  const data = projectData[current];
 
-  rotateArm(BEND_TO_IMAGE.lowerAngle,BEND_TO_IMAGE.upperAngle,ARM_SPEED,()=>{
-    card.style.zIndex='10';
+  // Create card element
+  const card = document.createElement('a');
+  card.className = 'project';
+  card.href = data.link;
+  card.innerHTML = `<img src="${data.img}" alt="${data.title}"><h3>${data.title}</h3><span>${data.year}</span>`;
+  card.style.position='absolute';
+  card.style.left='-400px'; // behind robot
+  card.style.top='0px';
+  projectsGrid.appendChild(card);
+
+  rotateArm(BEND_TO_PROJECT.lowerAngle,BEND_TO_PROJECT.upperAngle,ARM_SPEED,()=>{
     gripper.appendChild(card);
     card.style.left='-20px';
     card.style.top='-20px';
-    card.style.transform='rotate(0deg)'; // always upright
+    card.style.width='180px';
+    card.style.height='120px';
+    card.style.transform='rotate(0deg)'; // upright
 
-    rotateArm(BEND_TO_GALLERY.lowerAngle,BEND_TO_GALLERY.upperAngle,ARM_SPEED,()=>{
+    rotateArm(BEND_TO_GRID.lowerAngle,BEND_TO_GRID.upperAngle,ARM_SPEED,()=>{
       moveGripper(card, ARM_SPEED, ()=>{
         card.style.position='static';
         projectsGrid.appendChild(card);
+        current++;
         setTimeout(grabNext,300);
       });
     });
   });
 }
 
-// SEQUENCE: 2s delay -> 3s tape roll -> robot slides in
+// Start sequence: 2s delay -> 3s stripes roll -> robot slides
 setTimeout(()=>{
-  tapes.forEach(t=>{ t.style.width='0'; t.offsetWidth; t.style.width='100%'; }); // roll top & bottom
+  tapes.forEach(t=>t.style.animation='rollIn 3s ease forwards');
   setTimeout(()=>{
     robot.style.transition='right 0.5s ease-in-out';
     robot.style.right='0px';
     setTimeout(grabNext,500);
   },3000);
 },2000);
-</script>
 
+</script>
 </body>
 </html>
