@@ -20,6 +20,7 @@ body {
   font-family: Inter, system-ui, sans-serif;
   background:var(--bg);
   color:var(--fg);
+  overflow-x: hidden;
 }
 
 a { color:inherit; text-decoration:none; }
@@ -105,46 +106,14 @@ section h2 {
 }
 
 /* PROJECTS */
-.projects-wrapper {
+.projects-container {
   position: relative;
-  overflow: hidden;
 }
-
 .projects {
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
   gap:30px;
-  position: relative;
-}
-
-.project {
-  border:1px solid var(--line);
-  position:relative;
-  opacity:0; /* hide initially */
-}
-
-.project img {
-  width:100%;
-  display:block;
-}
-
-.project div {
-  padding:16px;
-}
-
-.project div::after {
-  content:attr(data-note);
-  display:block;
-  margin-top:8px;
-  font-size:.85rem;
-  color:var(--muted);
-  opacity:0;
-  transition:opacity .3s ease;
-}
-
-.project:hover div::after {
-  transition-delay:3s;
-  opacity:1;
+  min-height: 200px; /* will grow as cards are added */
 }
 
 /* FOOTER */
@@ -159,12 +128,10 @@ footer {
 .robot-container {
   position: absolute;
   top: 50%;
-  right: -800px;
   transform: translateY(-50%) rotate(180deg);
   width: 750px;
   height: 80px;
   filter: drop-shadow(0 5px 5px rgba(0,0,0,0.6));
-  z-index:200;
 }
 
 .lower-arm {
@@ -202,23 +169,27 @@ footer {
 /* CAUTION TAPE */
 .caution-tape {
   position: absolute;
-  left: 0;
-  width: 0;
   height: 40px;
-  background: repeating-linear-gradient(45deg, yellow 0 20px, black 20px 40px);
+  background: repeating-linear-gradient(
+    45deg,
+    yellow 0 20px,
+    black 20px 40px
+  );
   z-index: 100;
+  width: 0;
   overflow: hidden;
 }
 
-.caution-top { top: 0; }
-.caution-bottom { bottom: 0; }
-
-@keyframes rollIn { from { width:0; } to { width:100%; } }
-@keyframes rollOut { from { width:100%; } to { width:0; } }
-
+@keyframes rollIn {
+  from { width: 0; }
+  to { width: 100%; }
+}
+@keyframes rollOut {
+  from { width: 100%; }
+  to { width: 0; }
+}
 </style>
 </head>
-
 <body>
 
 <header class="container">
@@ -255,91 +226,57 @@ footer {
   </div>
 </section>
 
-<section>
-  <div class="container projects-wrapper">
+<section id="projects-section">
+  <div class="container projects-container">
     <h2>Projects</h2>
-    <div class="projects">
-      <a class="project imperfect" href="project5.html">
-        <img src="IMG_3329.jpg" alt="v4 failed due to shaft wobble under torque">
-        <div data-note="v6 — first version that survived repeated use">
-          <h3>Gilbert Coin Dispenser</h3>
-          <span>2025</span>
-        </div>
-      </a>
-      <a class="project" href="project4.html">
-        <img src="IMG_2896.jpeg" alt="alignment issues solved in iteration 3">
-        <div data-note="gear tolerances adjusted ±0.15mm">
-          <h3>Quiztendo Massive Game Toy</h3>
-          <span>2025</span>
-        </div>
-      </a>
-      <a class="project" href="project3.html">
-        <img src="IMG_3175 (1).jpeg" alt="bearing friction caused early errors">
-        <div data-note="measurement error reduced by redesign">
-          <h3>Anemometer</h3>
-          <span>2025</span>
-        </div>
-      </a>
-      <a class="project" href="project2.html">
-        <img src="IMG_1606.jpeg" alt="smart recycling bin early prototype">
-        <div data-note="final prototype included sensor feedback">
-          <h3>Smart Recycling Bin</h3>
-          <span>2025</span>
-        </div>
-      </a>
-      <a class="project" href="project1.html">
-        <img src="IMG_1607.jpeg" alt="cell project early assembly">
-        <div data-note="tested energy cell stability">
-          <h3>Cell Project</h3>
-          <span>2024</span>
-        </div>
-      </a>
-    </div>
-
+    <div class="projects"></div>
     <div class="caution-tape caution-top"></div>
     <div class="caution-tape caution-bottom"></div>
-
-    <div class="robot-container">
-      <div class="lower-arm">
-        <div class="upper-arm">
-          <div class="gripper"></div>
-        </div>
-      </div>
-    </div>
-
   </div>
 </section>
 
-<footer id="footer">
-  <div id="footer-line" style="font-size:.85rem; margin-bottom:10px;">
-    Most projects fail before they work.
-  </div>
+<footer>
+  <div style="font-size:.85rem; margin-bottom:10px;">Most projects fail before they work.</div>
   © 2025 Kirill Pegankin
 </footer>
 
+<div class="robot-container">
+  <div class="lower-arm">
+    <div class="upper-arm">
+      <div class="gripper"></div>
+    </div>
+  </div>
+</div>
+
 <script>
+// --- ROBOT ARM LOGIC ---
 const robot = document.querySelector('.robot-container');
 const lowerArm = robot.querySelector('.lower-arm');
 const upperArm = robot.querySelector('.upper-arm');
 const gripper = robot.querySelector('.gripper');
-const projectsSection = document.querySelector('.projects-wrapper');
-const projectsContainer = projectsSection.querySelector('.projects');
-const projectCards = Array.from(projectsContainer.querySelectorAll('.project'));
-const tapes = projectsSection.querySelectorAll('.caution-tape');
+const projectsContainer = document.querySelector('.projects');
+const tapes = document.querySelectorAll('#projects-section .caution-tape');
 
 const OFFSCREEN_RIGHT = -800;
 const ARM_SPEED = 800;
-const BEND_TO_IMAGE = { lowerAngle: 40, upperAngle: 80 };
+const BEND_TO_CARD = { lowerAngle: 40, upperAngle: 80 };
 const BEND_TO_GALLERY = { lowerAngle: 0, upperAngle: 0 };
 
-// Hide cards initially
-projectCards.forEach(p => p.style.display = 'none');
-
-// Start robot offscreen
+// Robot offscreen start
 robot.style.right = OFFSCREEN_RIGHT + 'px';
+robot.style.top = (projectsContainer.offsetTop + projectsContainer.offsetHeight/2) + 'px';
 
-// Arm rotation
-function rotateArm(lowerAngle, upperAngle, duration = ARM_SPEED, callback) {
+// Project data
+const projectData = [
+  { title: "Cell Project", img: "IMG_1607.jpeg", link:"project1.html", note:"tested energy cell stability", class:"" },
+  { title: "Anemometer", img: "IMG_3175 (1).jpeg", link:"project3.html", note:"measurement error reduced by redesign", class:"" },
+  { title: "Smart Recycling Bin", img:"IMG_1606.jpeg", link:"project2.html", note:"final prototype included sensor feedback", class:"" },
+  { title: "Quiztendo Massive Game Toy", img:"IMG_2896.jpeg", link:"project4.html", note:"gear tolerances adjusted ±0.15mm", class:"" },
+  { title: "Gilbert Coin Dispenser", img:"IMG_3329.jpg", link:"project5.html", note:"v6 — first version that survived repeated use", class:"imperfect" }
+];
+
+// Rotate arms
+function rotateArm(lowerAngle, upperAngle, duration=ARM_SPEED, callback){
   lowerArm.style.transition = `transform ${duration}ms ease-in-out`;
   upperArm.style.transition = `transform ${duration}ms ease-in-out`;
   lowerArm.style.transform = `rotate(${lowerAngle}deg)`;
@@ -348,43 +285,50 @@ function rotateArm(lowerAngle, upperAngle, duration = ARM_SPEED, callback) {
 }
 
 // Move gripper with card
-function moveGripper(card, duration = ARM_SPEED, callback) {
+function moveGripper(card, duration=ARM_SPEED, callback){
   card.style.transition = `all ${duration}ms ease-in-out`;
   card.style.left = '-20px';
   card.style.top = '-20px';
-  card.style.transform = 'scale(1.05) rotate(0deg)';
-  if(callback) setTimeout(callback, duration);
+  card.style.transform = 'scale(1.1) rotate(180deg)';
+  if(callback) setTimeout(callback,duration);
 }
 
 // Grab next card
-function grabNext() {
-  if(projectCards.length===0){
-    robot.style.transition='right 1s ease-in-out';
-    robot.style.right=OFFSCREEN_RIGHT+'px';
-    setTimeout(()=>{ tapes.forEach(t=>{ t.style.animation='rollOut 3s ease forwards'; }); },1000);
+function grabNext(){
+  if(projectData.length === 0){
+    robot.style.transition = 'right 1s ease-in-out';
+    robot.style.right = OFFSCREEN_RIGHT + 'px';
+    setTimeout(()=>{ tapes.forEach(t => t.style.animation='rollOut 3s ease forwards'); }, 1000);
     return;
   }
+  const data = projectData.shift();
+  const card = document.createElement('a');
+  card.className = `project ${data.class}`;
+  card.href = data.link;
+  card.innerHTML = `
+    <img src="${data.img}" alt="${data.title}">
+    <div data-note="${data.note}">
+      <h3>${data.title}</h3>
+    </div>
+  `;
+  card.style.position='absolute'; // initial grab
+  card.style.top='0px';
+  card.style.left='0px';
 
-  const card = projectCards.shift();
-  card.style.display='block'; // show when grabbed
-  card.style.position='absolute';
-  card.style.left='100%'; // start outside the screen
-  card.style.top='50px';
-  card.style.width='260px';
-  card.style.height='200px';
-  card.style.zIndex='100';
-  
-  rotateArm(BEND_TO_IMAGE.lowerAngle, BEND_TO_IMAGE.upperAngle, ARM_SPEED, ()=>{
+  // Step 1: rotate to card
+  rotateArm(BEND_TO_CARD.lowerAngle,BEND_TO_CARD.upperAngle,ARM_SPEED, ()=>{
+    // Step 2: attach to gripper
     gripper.appendChild(card);
-    card.style.left='-20px';
-    card.style.top='-20px';
 
-    rotateArm(BEND_TO_GALLERY.lowerAngle, BEND_TO_GALLERY.upperAngle, ARM_SPEED, ()=>{
-      moveGripper(card, ARM_SPEED, ()=>{
+    // Step 3: rotate to gallery (projects grid)
+    rotateArm(BEND_TO_GALLERY.lowerAngle,BEND_TO_GALLERY.upperAngle,ARM_SPEED, ()=>{
+      // Step 4: move card into place
+      moveGripper(card,ARM_SPEED, ()=>{
         card.style.position='static';
+        card.style.transform='';
         card.style.width='100%';
         card.style.height='auto';
-        projectsContainer.appendChild(card);
+        projectsContainer.querySelector('.projects').appendChild(card);
         setTimeout(grabNext, 300);
       });
     });
@@ -393,14 +337,13 @@ function grabNext() {
 
 // Sequence: 2s delay -> 3s tape roll -> robot slides in
 setTimeout(()=>{
-  tapes.forEach(t=>{ t.style.animation='rollIn 3s ease forwards'; });
+  tapes.forEach(t => t.style.animation='rollIn 3s ease forwards');
   setTimeout(()=>{
     robot.style.transition='right 0.5s ease-in-out';
     robot.style.right='0px';
     setTimeout(grabNext,500);
   },3000);
 },2000);
-
 </script>
 
 </body>
