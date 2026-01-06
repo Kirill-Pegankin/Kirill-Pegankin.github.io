@@ -104,27 +104,22 @@ section h2 {
   font-weight:600;
 }
 
-/* PROJECTS WRAPPER */
+/* PROJECTS */
 .projects-wrapper {
   position: relative;
+  overflow: hidden;
 }
 
-/* PROJECTS */
 .projects {
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
   gap:30px;
-  position: relative; /* to anchor robot and tape */
+  position: relative;
 }
 
 .project {
   border:1px solid var(--line);
-  position: absolute; /* allow robot to drag */
-  background:var(--bg);
-}
-
-.project.imperfect {
-  transform: translateY(6px);
+  position:relative;
 }
 
 .project img {
@@ -159,86 +154,15 @@ footer {
   border-top:1px solid var(--line);
 }
 
-/* BLUEPRINT GRID */
-.blueprint {
-  position:fixed;
-  inset:0;
-  background-image:
-    linear-gradient(rgba(0,170,255,.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,170,255,.08) 1px, transparent 1px);
-  background-size:40px 40px;
-  pointer-events:none;
-  opacity:0;
-  transition:opacity .3s ease;
-  z-index:9999;
-}
-
-.blueprint.show { opacity:1; }
-
-/* INSPECTION MODE */
-.inspect * {
-  outline:1px dashed rgba(0,170,255,.25);
-}
-
-.inspect::after {
-  content:"inspection mode";
-  position:fixed;
-  bottom:12px;
-  right:16px;
-  font-size:.75rem;
-  color:var(--muted);
-}
-
-/* SIGNATURE */
-.signature {
-  position:fixed;
-  bottom:18px;
-  left:18px;
-  font-size:.75rem;
-  color:var(--muted);
-  opacity:0;
-  transition:opacity .3s ease;
-}
-.signature.show { opacity:1; }
-
-@media (max-width:900px) {
-  header, .about { grid-template-columns:1fr; }
-}
-
-/* PRINT MODE */
-@media print {
-  body::before {
-    content: "Designed to be held.";
-    display: block;
-    font-size: 12pt;
-    margin-bottom: 20px;
-  }
-}
-
-/* ROBOT AND TAPE */
-.caution-tape {
-  position: absolute;
-  height: 40px;
-  background: repeating-linear-gradient(45deg, yellow 0 20px, black 20px 40px);
-  z-index: 100;
-  width: 0;
-  overflow: hidden;
-}
-
-.caution-top { top: 0; }
-.caution-bottom { bottom: 0; }
-
-@keyframes rollIn { from { width:0; } to { width:100%; } }
-@keyframes rollOut { from { width:100%; } to { width:0; } }
-
+/* ROBOT ARM */
 .robot-container {
   position: absolute;
   top: 50%;
+  right: -800px;
   transform: translateY(-50%) rotate(180deg);
   width: 750px;
   height: 80px;
   filter: drop-shadow(0 5px 5px rgba(0,0,0,0.6));
-  right: -800px; /* start offscreen */
   z-index:200;
 }
 
@@ -273,6 +197,24 @@ footer {
   top: -10px;
   left: 300px;
 }
+
+/* CAUTION TAPE */
+.caution-tape {
+  position: absolute;
+  left: 0;
+  width: 0;
+  height: 40px;
+  background: repeating-linear-gradient(45deg, yellow 0 20px, black 20px 40px);
+  z-index: 100;
+  overflow: hidden;
+}
+
+.caution-top { top: 0; }
+.caution-bottom { bottom: 0; }
+
+@keyframes rollIn { from { width:0; } to { width:100%; } }
+@keyframes rollOut { from { width:100%; } to { width:0; } }
+
 </style>
 </head>
 
@@ -281,15 +223,22 @@ footer {
 <header class="container">
   <div>
     <h1>Kirill Pegankin</h1>
-    <p>I design and build physical systems. CAD to real parts. Tested, iterated, rebuilt.</p>
+    <p>
+      I design and build physical systems.
+      CAD to real parts.
+      Tested, iterated, rebuilt.
+    </p>
   </div>
-  <img src="IMG_3000.png" alt="final portrait">
+  <img src="IMG_3000.png" alt="final portrait after multiple lighting tests">
 </header>
 
 <section>
   <div class="container about">
     <h2>About</h2>
-    <p>My work focuses on functional engineering projects—mechanisms, enclosures, and devices designed for real use.</p>
+    <p>
+      My work focuses on functional engineering projects—mechanisms,
+      enclosures, and devices designed for real use.
+    </p>
   </div>
 </section>
 
@@ -316,7 +265,6 @@ footer {
           <span>2025</span>
         </div>
       </a>
-
       <a class="project" href="project4.html">
         <img src="IMG_2896.jpeg" alt="alignment issues solved in iteration 3">
         <div data-note="gear tolerances adjusted ±0.15mm">
@@ -324,7 +272,6 @@ footer {
           <span>2025</span>
         </div>
       </a>
-
       <a class="project" href="project3.html">
         <img src="IMG_3175 (1).jpeg" alt="bearing friction caused early errors">
         <div data-note="measurement error reduced by redesign">
@@ -332,7 +279,6 @@ footer {
           <span>2025</span>
         </div>
       </a>
-
       <a class="project" href="project2.html">
         <img src="IMG_1606.jpeg" alt="smart recycling bin early prototype">
         <div data-note="final prototype included sensor feedback">
@@ -340,7 +286,6 @@ footer {
           <span>2025</span>
         </div>
       </a>
-
       <a class="project" href="project1.html">
         <img src="IMG_1607.jpeg" alt="cell project early assembly">
         <div data-note="tested energy cell stability">
@@ -350,7 +295,6 @@ footer {
       </a>
     </div>
 
-    <!-- Robot + caution tape -->
     <div class="caution-tape caution-top"></div>
     <div class="caution-tape caution-bottom"></div>
 
@@ -372,34 +316,7 @@ footer {
   © 2025 Kirill Pegankin
 </footer>
 
-<div class="blueprint"></div>
-<div class="signature">built, not styled</div>
-
 <script>
-// --- Existing Portfolio Scripts (inspection mode, triple click swap, title change, etc.) ---
-let seq='';
-document.addEventListener('keydown', e => { seq += e.key.toLowerCase(); if(!'cad'.startsWith(seq)) seq=''; if(seq==='cad'){ const bp=document.querySelector('.blueprint'); bp.classList.add('show'); setTimeout(()=>bp.classList.remove('show'),5000); seq=''; }});
-
-document.addEventListener('keydown', e => { if(e.key.toLowerCase() === 'i'){ document.body.classList.toggle('inspect'); }});
-
-document.querySelectorAll('.swap').forEach(img => { let clicks=0; img.addEventListener('click', ()=>{ clicks++; if(clicks===3){ [img.src,img.dataset.alt] = [img.dataset.alt,img.src]; clicks=0; } setTimeout(()=>clicks=0,600); }); });
-
-const baseTitle = document.title;
-window.addEventListener('scroll', ()=>{ if(window.scrollY > document.body.scrollHeight/3){ document.title='Kirill Pegankin — Iterating'; } else{ document.title=baseTitle; }});
-
-let rewarded=false;
-window.addEventListener('scroll', ()=>{ if(!rewarded && window.scrollY + window.innerHeight >= document.body.scrollHeight-5){ document.getElementById('footer').insertAdjacentHTML('afterbegin','<div style="font-size:.8rem;margin-bottom:8px;">Still here? You’d like the workshop.</div>'); rewarded=true; }});
-
-if(new URLSearchParams(location.search).get('mode')==='shop'){ document.body.insertAdjacentHTML('afterbegin','<div style="position:fixed;top:10px;left:10px;font-size:.75rem;color:var(--muted);z-index:999;">Workshop context enabled</div>'); }
-
-let sig=''; document.addEventListener('keydown', e=>{ sig+=e.key.toLowerCase(); if(!'workshop'.startsWith(sig)) sig=''; if(sig==='workshop'){ const el=document.querySelector('.signature'); el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),3000); sig=''; }});
-
-const now = new Date();
-if(now.getHours()===0 && now.getMinutes()<5){
-  document.getElementById('footer-line').textContent='The workshop is quiet.';
-}
-
-// --- Robot + Caution Tape Script ---
 const robot = document.querySelector('.robot-container');
 const lowerArm = robot.querySelector('.lower-arm');
 const upperArm = robot.querySelector('.upper-arm');
@@ -413,10 +330,10 @@ const ARM_SPEED = 800;
 const BEND_TO_IMAGE = { lowerAngle: 40, upperAngle: 80 };
 const BEND_TO_GALLERY = { lowerAngle: 0, upperAngle: 0 };
 
-// Start arm off-screen
+// Start arm fully offscreen
 robot.style.right = OFFSCREEN_RIGHT + 'px';
 
-// Layout projects stack for robot
+// Layout project stack
 function layoutStack() {
   projects.forEach((proj, i) => {
     proj.style.top = `${i*150}px`;
@@ -426,7 +343,7 @@ function layoutStack() {
 }
 layoutStack();
 
-// Rotate arms
+// Arm rotation
 function rotateArm(lowerAngle, upperAngle, duration = ARM_SPEED, callback) {
   lowerArm.style.transition = `transform ${duration}ms ease-in-out`;
   upperArm.style.transition = `transform ${duration}ms ease-in-out`;
@@ -435,7 +352,7 @@ function rotateArm(lowerAngle, upperAngle, duration = ARM_SPEED, callback) {
   if(callback) setTimeout(callback, duration);
 }
 
-// Move gripper with project
+// Move gripper with project card
 function moveGripper(proj, duration = ARM_SPEED, callback) {
   proj.style.transition = `all ${duration}ms ease-in-out`;
   proj.style.left = '-20px';
@@ -444,7 +361,7 @@ function moveGripper(proj, duration = ARM_SPEED, callback) {
   if(callback) setTimeout(callback, duration);
 }
 
-// Grab next project card
+// Grab next project
 function grabNext() {
   if(projects.length===0){
     robot.style.transition='right 1s ease-in-out';
