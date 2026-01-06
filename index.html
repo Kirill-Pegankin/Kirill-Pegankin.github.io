@@ -125,12 +125,13 @@ section h2 {
 /* ROBOT */
 .robot-container {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%); /* <-- FIXED: removed rotate(180deg) */
+  top: 50%; /* move it down near the project section */
+  transform: translateY(-50%) rotate(180deg); /* flip it 180 degrees */
   width: 750px;
   height: 80px;
   filter: drop-shadow(0 5px 5px rgba(0,0,0,0.6));
 }
+
 
 .lower-arm {
   width: 450px;
