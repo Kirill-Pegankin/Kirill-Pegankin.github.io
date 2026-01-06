@@ -104,12 +104,14 @@ section h2 {
 }
 
 .project {
-  position: absolute;
+  position: absolute; /* offscreen animation */
   width: 280px;
   height: 180px;
   overflow: hidden;
   border:1px solid var(--line);
   border-radius:8px;
+  /* add relative context for title/year */
+  position: absolute;
 }
 
 .project img {
@@ -275,12 +277,12 @@ const upperArm = robot.querySelector('.upper-arm');
 const gripper = robot.querySelector('.gripper');
 const tapes = document.querySelectorAll('.caution-tape');
 
-const OFFSCREEN_LEFT = -800; // robot starts off left
+const OFFSCREEN_LEFT = -800;
 const ARM_SPEED = 800;
 const BEND_TO_IMAGE = { lowerAngle: 40, upperAngle: 80 };
 const BEND_TO_GALLERY = { lowerAngle: 0, upperAngle: 0 };
 
-// move robot offscreen to the left
+// robot offscreen left
 robot.style.left = OFFSCREEN_LEFT + 'px';
 
 const projectCardsData = [
@@ -305,7 +307,7 @@ projectCardsData.forEach(data=>{
   card.style.width = '280px';
   card.style.height = '180px';
   card.style.top = '0';
-  card.style.left = '-350px'; // offscreen left
+  card.style.left = '-350px';
   offscreenCards.push(card);
   document.body.appendChild(card);
 });
@@ -320,7 +322,7 @@ function rotateArm(lowerAngle, upperAngle, duration = ARM_SPEED, callback) {
 
 function moveGripper(card, duration = ARM_SPEED, callback){
   card.style.transition = `all ${duration}ms ease-in-out`;
-  card.style.left = '0px'; // move to gallery
+  card.style.left = '0px';
   card.style.top = '0px';
   if(callback) setTimeout(callback, duration);
 }
@@ -351,16 +353,16 @@ function grabNext(){
   });
 }
 
-// animate stripes and start robot from left
+// stripes and start
 setTimeout(()=>{
   tapes.forEach(t=>{ t.style.width='100%'; });
   setTimeout(()=>{
     robot.style.transition='left 0.5s ease-in-out';
-    robot.style.left='0px'; // enter gallery
+    robot.style.left='0px'; // enter left
     setTimeout(grabNext,500);
   },3000);
 },2000);
 </script>
-  
+
 </body>
 </html>
