@@ -5,6 +5,16 @@
   <title>Kirill Pegankin — Engineering Portfolio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q3NMN5BPPD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-Q3NMN5BPPD');
+  </script>
+
   <style>
     :root {
       --bg: #0f1115;
@@ -45,7 +55,6 @@
     }
 
     /* HEADER */
-
     header {
       border-bottom: 1px solid var(--line);
     }
@@ -78,7 +87,6 @@
     }
 
     /* SECTION */
-
     section {
       border-bottom: 1px solid var(--line);
     }
@@ -90,7 +98,6 @@
     }
 
     /* SUMMARY */
-
     .summary {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -115,7 +122,6 @@
     }
 
     /* PROJECTS */
-
     .projects {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -148,7 +154,6 @@
     }
 
     /* FOOTER */
-
     footer {
       padding: 32px 20px;
       text-align: center;
