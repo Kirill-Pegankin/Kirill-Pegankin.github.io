@@ -6,17 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Favicon -->
-  <link rel="icon" href="favicon.ico" type="image/x-icon" />
-
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q3NMN5BPPD"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-Q3NMN5BPPD');
-  </script>
+  <link rel="icon" type="image/png" href="K.png">
+  <link rel="shortcut icon" type="image/png" href="K.png">
 
   <style>
     :root {
@@ -57,7 +48,6 @@
       padding: 64px 20px;
     }
 
-    /* HEADER */
     header {
       border-bottom: 1px solid var(--line);
     }
@@ -89,7 +79,6 @@
       background: var(--panel);
     }
 
-    /* SECTION */
     section {
       border-bottom: 1px solid var(--line);
     }
@@ -100,7 +89,6 @@
       margin-bottom: 32px;
     }
 
-    /* SUMMARY */
     .summary {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -124,7 +112,6 @@
       color: var(--muted);
     }
 
-    /* PROJECTS */
     .projects {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -156,7 +143,20 @@
       color: var(--muted);
     }
 
-    /* FOOTER */
+    .view-all-btn {
+      display: inline-block;
+      padding: 12px 20px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      transition: border-color 0.2s ease, color 0.2s ease;
+      margin-top: 32px;
+    }
+
+    .view-all-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
     footer {
       padding: 32px 20px;
       text-align: center;
@@ -169,19 +169,6 @@
         grid-template-columns: 1fr;
       }
     }
-    .view-all-btn {
-  display: inline-block;
-  padding: 12px 20px;
-  border: 1px solid var(--line);
-  background: var(--panel);
-  transition: border-color 0.2s ease, color 0.2s ease;
-}
-
-.view-all-btn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
   </style>
 </head>
 
@@ -276,8 +263,8 @@
 <section>
   <div class="container">
     <h2>Certifications</h2>
-
     <div class="projects">
+
       <div class="project">
         <img src="cert1.jpg" alt="">
         <div class="project-info">
@@ -301,9 +288,10 @@
           <span>Coursera · 2024</span>
         </div>
       </div>
+
     </div>
 
-    <div style="margin-top:32px; text-align:center;">
+    <div style="text-align:center;">
       <a href="certificates.html" class="view-all-btn">View All Certifications</a>
     </div>
   </div>
